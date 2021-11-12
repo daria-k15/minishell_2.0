@@ -30,8 +30,8 @@ void	tree_handling(char **array, t_data *data, char **envp)
 
 	ast = NULL;
 	ast = create_tree(ast, array);
-	// print_tree_rec(ast, 0);
-	tree_handle(ast, data, envp);
+	print_tree_rec(ast, 0);
+	// tree_handle(ast, data, envp);
 }
 
 int	main(int argc, char **argv, char **envp)

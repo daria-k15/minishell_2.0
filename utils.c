@@ -43,13 +43,3 @@ void	free_array(char **str)
 	free(str[i]);
 	free(str);
 }
-
-int	ft_strequal(const char *str1, const char *str2)
-{
-	while ((*str1 == *str2) && *str1 && *str2)
-	{	
-		str1++;
-		str2++;
-	}
-	return (!((unsigned char)*str1 - (unsigned char)*str2));
-}

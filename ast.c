@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: heveline <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/12 16:06:20 by heveline          #+#    #+#             */
+/*   Updated: 2021/11/12 16:06:22 by heveline         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_ast	*create_tree(t_ast *ast, char **array)
@@ -30,44 +42,12 @@ t_ast	*create_node(char *value)
 			node->prior = 3;
 		else if (ft_strcmp(value, ">>") == 0 || ft_strcmp(value, "<<") == 0)
 			node->prior = 3;
-		else if (ft_strcmp(value, "|") == 0 )
+		else if (ft_strcmp(value, "|") == 0)
 			node->prior = 2;
 		else
 			node->prior = 0;
 	}
 	return (node);
-}
-
-void printtabs(int n)
-{
-	int i = 0;
-	while (i < n)
-	{
-		printf("\t");
-		i++;
-	}
-}
-
-void print_tree_rec(t_ast *ast, int level)
-{
-	if (ast == NULL)
-	{
-		printtabs(level);
-		printf("-----<empty>-----\n");
-		return ;
-	}
-	printtabs(level);
-	printf("value = |%s| prior = |%d|\n ", ast->value,ast->prior);
-	printtabs(level);
-
-	printf("left\n");
-	print_tree_rec(ast->left, level + 1);
-	printtabs(level);
-
-	printf("right\n");
-	print_tree_rec(ast->right, level + 1);
-	printtabs(level);
-	printf("done\n");
 }
 
 void	insert_left(t_ast **ast, char *value)
@@ -85,7 +65,7 @@ void	insert_left(t_ast **ast, char *value)
 		tmp->right = NULL;
 		if (ft_strcmp(value, ">") == 0 || ft_strcmp(value, "<") == 0)
 			tmp->prior = 3;
-		else if (ft_strcmp(value, "|") == 0 )
+		else if (ft_strcmp(value, "|") == 0)
 			tmp->prior = 2;
 		else if (check_arg(value))
 			tmp->prior = 1;
@@ -103,7 +83,7 @@ int	return_prior(char *value)
 		return (3);
 	else if (ft_strcmp(value, ">>") == 0 || ft_strcmp(value, "<<") == 0)
 		return (3);
-	else if (ft_strcmp(value, "|") == 0 )
+	else if (ft_strcmp(value, "|") == 0)
 		return (2);
 	else if (check_arg(value))
 		return (1);
