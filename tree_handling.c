@@ -44,30 +44,7 @@ static void write_to_tmp(t_ast *ast, int fd)
     
 }
 
-static void heredoc_func(t_ast *ast, t_data *data)
-{
-    // int here;
-    // char *stop;
-    int i;
-    // char *name;
 
-    // i = 0;
-    
-    if (!ast)
-        return ;
-    if (ft_strcmp(ast->value, "<<") == 0)
-    {
-        // name = ft_strjoin("/tmp/.tmp_heredoc", ft_itoa(i));
-        i = open("/tmp/.tmp_heredoc", O_CREAT | O_TRUNC | O_WRONLY,
-				S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
-        write_to_tmp(ast->right, i);
-        i++;
-        // free(name);
-        close(i);        
-    }
-    heredoc_func(ast->left, data);
-    heredoc_func(ast->right, data);
-}
 
 t_ast_data  *create_ast_data(void)
 {
@@ -212,11 +189,24 @@ void    create_files(t_ast_data *val, int fd)
     val->file = tmp;
 }
 
+void clean_node(t_ast *ast, t_data *data, t_ast_data *val)
+{
+	;
+}
+
+void empty_cmd(t_ast *ast, t_data *data, t_ast_data *val, char **array)
+{
+	free(array);
+	clean_node(ast, data, val);
+}
+
 void    cmd_commands(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
 {
         char    **cmd_array;
 
         cmd_array = split_values(ast->value, envp);
+		if (cmd_array[0] == NULL)
+			empty_cmd(ast, data, val, cmd_array);
     	if (ft_strcmp(cmd_array[0], "env") == 0)
 			env_builtin(cmd_array, data->env, val->out);
 		else if (ft_strcmp(cmd_array[0], "export") == 0)
@@ -236,100 +226,7 @@ void    cmd_commands(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
 		
 }
 
-void	left_redir(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
-{
-	int i;
 
-    i = open((char *)ast->right->value, O_CREAT | O_TRUNC | O_WRONLY,
-			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
-	if (i == -1)
-	{
-		ft_putstr_fd("Z&D Shell: ", STDERR_FILENO);
-		ft_putstr_fd(ast->right->value, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putendl_fd(strerror(errno), STDERR_FILENO);
-		val->end = 1;
-	}
-	else
-	{
-		create_files(val, i);
-		val->in = i;
-		go_through_nodes(ast->left, data, val, envp);
-	}
-}
-
-void    right_redir(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
-{
-    int i;
-	
-	if (!ft_strcmp((char *)ast->value, ">>"))
-		i = open((char *)ast->right->value, O_CREAT | O_APPEND | O_WRONLY,
-			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
-	else
-    	i = open((char *)ast->right->value, O_CREAT | O_TRUNC | O_WRONLY,
-			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
-	if (i == -1)
-	{
-		ft_putstr_fd("Z&D Shell: ", STDERR_FILENO);
-		ft_putstr_fd(ast->right->value, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putendl_fd(strerror(errno), STDERR_FILENO);
-		val->end = 1;
-	}
-	else
-	{
-		create_files(val, i);
-		val->out = i;
-		go_through_nodes(ast->left, data, val, envp);
-	}
-}
-
-void pipe_child(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
-{
-	int fork_pid;
-	int pipe_des[2];
-
-	if (pipe(pipe_des) < 0)
-		ft_err("pipe problem");
-	fork_pid = fork();
-	//check for -1
-
-	if (fork_pid == 0)
-	{
-		close(pipe_des[0]);
-		if (dup2(pipe_des[1], STDOUT_FILENO) == -1)
-			ft_err("dup2");
-		go_through_nodes(ast->left, data, val, envp);
-		close(pipe_des[1]);
-	}
-	else
-	{
-		close(pipe_des[1]);
-		if (dup2(pipe_des[0], STDIN_FILENO) == -1)
-			ft_err("dup2");
-		go_through_nodes(ast->right, data, val, envp);
-		close(pipe_des[0]);
-		waitpid(fork_pid, NULL, 0);
-	}
-	exit(1);
-
-}
-
-void pipe_func(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
-{
-	int fork_pid;
-
-	fork_pid = fork();
-	//check condition here
-
-	if (fork_pid == 0)
-		pipe_child(ast, data, val, envp);
-	else
-	{
-		waitpid(fork_pid, NULL, 0);
-	//	control->exit_status = WIFEXITED(status) ? WEXITSTATUS(status) : g_sig;
-	}
-}
 
 void    go_through_nodes(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
 {
@@ -337,7 +234,7 @@ void    go_through_nodes(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
         return ;
     else if (!ft_strcmp((char *)ast->value, ">") || !ft_strcmp((char *)ast->value, ">>"))
         right_redir(ast, data, val, envp);
-	else if (ft_strcmp(ast->value, "<") == 0)
+	else if (ft_strcmp(ast->value, "<") == 0 || ft_strequal((char *)ast->value, "<<"))
 		left_redir(ast, data, val, envp);
     else if (ft_strcmp(ast->value, "|") == 0)
 		pipe_func(ast, data, val, envp);
@@ -347,6 +244,24 @@ void    go_through_nodes(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
         val->end = 1;
     }
 }
+
+static void heredoc_func(t_ast *ast, t_data *data)
+{
+    int i;
+    
+    if (!ast)
+        return ;
+    if (ft_strcmp(ast->value, "<<") == 0)
+    {
+        i = open("/tmp/.tmp_heredoc", O_CREAT | O_TRUNC | O_WRONLY,
+				S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
+        write_to_tmp(ast->right, i);
+		close(i);        
+    }
+    heredoc_func(ast->left, data);
+    heredoc_func(ast->right, data);
+}
+
 
 void tree_handle(t_ast *ast, t_data *data, char **envp)
 {

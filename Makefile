@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = gcc 
-FLAGS = -Wall -Wextra  -L/Users/heveline/.brew/opt/readline/lib -I/Users/heveline/.brew/opt/readline/include 
+FLAGS = -Wall -Wextra  -L/Users/qcesar/.brew/opt/readline/lib -I/Users/qcesar/.brew/opt/readline/include 
 
 LIBFT = $(LIBFT_DIRECTORY)libft.a
 LIBFT_DIRECTORY = ./libft/
@@ -20,6 +20,7 @@ SOURCES =	main.c\
 			signals.c \
 			envp.c \
 			exit_status.c \
+			redirects.c
 
 
 OBJECTS_DIRECTORY = objects/

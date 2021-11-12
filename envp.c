@@ -67,13 +67,14 @@ void  binary_command(char **cmd_array, t_env **env_list, t_data *data, t_ast_dat
 	pid_t	pid;
 	int i;
 
-	pid = fork();
+	if (data->pid != 0)
+		pid = fork();
 	if (pid < 0)
 	{
 		ft_putendl_fd("Fork error", STDERR_FILENO);
 		set_exit(228);
 	}
-	if (pid == 0)
+	if (pid == 0 || data->pid == 0)
 	{
 		dup2(val->out, STDOUT_FILENO);
 		dup2(val->in, STDIN_FILENO);
