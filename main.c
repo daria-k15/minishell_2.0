@@ -34,29 +34,30 @@ void	tree_handling(char **array, t_data *data, char **envp)
 	tree_handle(ast, data, envp);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	main(int ac, char **av, char **env)
 {
 	char	*line;
 	char	**array;
-	t_data	*data;
+	t_data	*control;
 
-	data = create_data(envp, argc, argv);
+	control = create_data(env, ac, av);
 	while (1)
 	{
-		line = start_loop();
+		sighandler();
+		line = readline("Z&D_Shell: ");
 		if (!line)
 		{
 			ft_putendl_fd("exit", STDOUT_FILENO);
 			break ;
 		}
-		if (line[0] == '\0')
+		if (!line[0])
 		{
 			free(line);
 			continue ;
 		}
 		add_history(line);
-		array = parsing(line, envp);
-		tree_handling(array, data, envp);
+		array = parsing(line, env);
+		tree(array, control, env);
 	}
 	clear_history();
 	return (EXIT_SUCCESS);

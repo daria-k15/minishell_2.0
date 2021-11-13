@@ -29,10 +29,3 @@ void	tree_sighandler(void)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, tree_sighand);
 }
-
-char	*start_loop(void)
-{
-	sighandler();
-	return (readline("Z&D_Shell: "));
-	// return ("ls");
-}

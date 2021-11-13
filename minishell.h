@@ -129,7 +129,7 @@ int check_hero(t_ast *ast);
 
 //-----signals.c-----//
 void	handlerint(int signal);
-void	sighandler(void);
+//void	sighandler(void);
 char	*start_loop(void);
 void	tree_sighandler(void);
 
