@@ -56,16 +56,25 @@ void	add_value(t_ast **ast, char *value);
 void	print_tree_rec(t_ast *ast, int level);
 t_ast*	create_tree(t_ast *ast, char **array);
 
-//------parsing.c------//
-
+/*-----parsingAstArray.c-----*/
 int		check_char(char *line, char ch, int i);
-char	*slash_parse(char *line, int *i);
+char	*skip_space(char *line, int *i);
 char	*single_quote_parse(char *line, int *i);
+char	*slash_parse(char *line, int *i);
 char	*double_quote_parse(char *line, int *i);
-char *skip_space(char *line, int *i);
-char *redirect_parse(char *line, int *i, char **envp);
-char **parsing(char *line, char **envp);
+
+/*-----parsingAstArray2.c-----*/
+char	*redirect2(char *tmp, char *line, int *j);
+char	*redirect_parse(char *line, int *i, char **envp);
+int		find_redir(char *line);
 char	**add_val(char **array, char *val);
+char	*parsing2(char *line);
+
+/*-----parsingAstArray3.c-----*/
+char	*new_line(char *line, int *i);
+char	**pars_to_array(char *line, char **array, char **envp, int *i);
+char	**parsing(char *line, char **envp);
+
 
 //------dollar_parse.c------//
 char	*parse_dollar(char *line, int *i, char **envp);
@@ -121,11 +130,14 @@ void		rl_replace_line(const char *text, int clear_undo);
 
 //-----utils.c-----//
 int	check_arg(char *arg);
+int check_hero(t_ast *ast);
 int	check_redir(t_ast *ast);
 void	ft_err(char *str);
 void	free_array(char **str);
+
+//-----utils_2.c-----//
 int	ft_strequal(const char *str1, const char *str2);
-int check_hero(t_ast *ast);
+int	check_redir_pipe(char *line);
 
 //-----signals.c-----//
 void	handlerint(int signal);

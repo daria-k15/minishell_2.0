@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = gcc 
-FLAGS = -Wall -Wextra  -L/Users/qcesar/.brew/opt/readline/lib -I/Users/qcesar/.brew/opt/readline/include 
+FLAGS = -Wall -Wextra  -L/Users/heveline/.brew/opt/readline/lib -I/Users/heveline/.brew/opt/readline/include 
 
 LIBFT = $(LIBFT_DIRECTORY)libft.a
 LIBFT_DIRECTORY = ./libft/
@@ -11,12 +11,16 @@ HEADER =	minishell.h
 
 SOURCES =	main.c\
 			ast.c\
+			printAst.c\
 			builtins.c\
 			dollar_parse.c\
 			env_functions.c\
 			tree_handling.c\
 			parsingAstArray.c\
+			parsingAstArray2.c\
+			parsingAstArray3.c\
 			utils.c \
+			utils_2.c\
 			signals.c \
 			envp.c \
 			exit_status.c \
