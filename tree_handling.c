@@ -205,7 +205,9 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 {
         char    **cmd_array;
 
+
         cmd_array = split_values(ast->value, envp);
+		ft_putendl_fd("in cmd", 2);
 		if (cmd_array[0] == NULL)
 		{
 			empty_cmd(ast, control, val, cmd_array);
@@ -240,7 +242,7 @@ void	ctrl_free(t_ctrl *control)
 void	ast_data_default(t_ast_data *val)
 {
 	int	i;
-
+/*
 	if (val->pipe)
 	{
 		i = 0;
@@ -248,7 +250,7 @@ void	ast_data_default(t_ast_data *val)
 			close(val->pipe[i++]);
 		free(val->pipe);
 		val->pipe = NULL;
-	}
+	}*/
 	if (val->file)
 	{
 		i = 0;
@@ -271,6 +273,7 @@ void    go_through_nodes(t_ast *ast, t_ctrl *control, t_ast_data *val, char **en
 {
     if (!ast)
 	{
+		ft_putendl_fd("hey1111", 2);
 		if (control->pid == 0)
 		{
 			ctrl_free(control);

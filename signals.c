@@ -44,3 +44,25 @@ void	tree_sighandler(void)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, tree_sighand);
 }
+
+void	handlerquit(int signum)
+{
+	(void)signum;
+	printf("Quit: 3\n");
+	set_exit(131);
+}
+
+void	handlerintproc(int signum)
+{
+	(void)signum;
+	set_exit(130);
+	printf("\n");
+	rl_on_new_line();
+}
+
+void	sigproc(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, handlerquit);
+	signal(SIGINT, handlerintproc);
+}
