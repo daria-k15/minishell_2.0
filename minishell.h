@@ -157,6 +157,7 @@ void    right_redir(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp);
 void	left_redir(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp);
 void pipe_func(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp);
 void ctrl_free(t_ctrl *control);
+void	ast_data_default(t_ast_data *val);
 //----set_exit.c-----//
 static int  new_exit(const int *id);
 int get_exit(void);

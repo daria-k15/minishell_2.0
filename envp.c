@@ -82,11 +82,12 @@ void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *con
 		ast_data_free(val);
 		env = env_array(env_list);
 		path = path_handler(cmd_array[0], env);
+			ft_putendl_fd("are you in the exec?", 2);
 		// printf("%s\n", path);
 		if (execve(path, cmd_array, env) == -1)
 			ft_err("Error: command not executable");
 	}
-	else
-		waitpid(pid, &i, 0);
+	waitpid(pid, &i, 0);
+	ft_putendl_fd("in binary before set exit", 2);
 	set_exit(i/256);
 }
