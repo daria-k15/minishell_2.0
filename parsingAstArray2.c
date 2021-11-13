@@ -108,5 +108,7 @@ char	*parsing2(char *line)
 		if (line[i] == ' ')
 			line = skip_space(line, &i);
 	}
+	if (line[ft_strlen(line) - 1] == ' ')
+		line = ft_substr(line, 0, ft_strlen(line) - 1);
 	return (line);
 }

@@ -124,32 +124,29 @@ void pipe_func(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
 	// add_new_pipes(val, pipe_des[0]);
 	val->out = pipe_des[1];
 	fork_pid[0] = fork();
+
 	if (fork_pid[0] == 0)
 	{
 		printf("left ast\n");
 		control->pid = 0;
-		printf("value of ast = %s\n", ast->left->value);
+		close(pipe_des[0]);
 		go_through_nodes(ast->left, control, val, envp);
 	}
+
 	ast_data_default(val);
 	val->in = pipe_des[0];
 	
-	ft_putendl_fd("hey1", 2);
 	fork_pid[1] = fork();
 	if (fork_pid[1] == 0)
 	{
-		ft_putendl_fd("hey2", 2);
-		ft_putnbr_fd(getpid(), 2);
-		ft_putendl_fd("", 2);
 		control->pid = 0;
+		close(pipe_des[1]);
 		go_through_nodes(ast->right, control, val, envp);
-		ft_putendl_fd("hey4", 2);
 	}
+	
 	close(pipe_des[0]);
 	close(pipe_des[1]);
-	ft_putendl_fd("hey3", 2);
-	ft_putnbr_fd(getpid(), 2);
-	ft_putendl_fd("", 2);
+	
 	waitpid(fork_pid[0], 0, 0);
 	waitpid(fork_pid[1], &status, 0);
 	set_exit(status/256);
