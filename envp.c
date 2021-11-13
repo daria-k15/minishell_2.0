@@ -82,6 +82,7 @@ void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *con
 		ast_data_free(val);
 		env = env_array(env_list);
 		path = path_handler(cmd_array[0], env);
+		// printf("%s\n", path);
 		if (execve(path, cmd_array, env) == -1)
 			ft_err("Error: command not executable");
 	}

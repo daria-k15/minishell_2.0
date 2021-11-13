@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: heveline <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/13 16:20:58 by heveline          #+#    #+#             */
+/*   Updated: 2021/11/13 16:21:26 by heveline         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	check_arg(char *arg)
@@ -12,7 +24,7 @@ int	check_arg(char *arg)
 	return (0);
 }
 
-int check_hero(t_ast *ast)
+int	check_hero(t_ast *ast)
 {
 	if (ft_strcmp(ast->value, "<<") == 0)
 		return (1);
