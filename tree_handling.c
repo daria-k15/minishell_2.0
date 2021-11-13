@@ -226,12 +226,57 @@ void    cmd_commands(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
 		
 }
 
+void	data_free(t_data *data)
+{
+	free_env(data->env);
+	free(data);
+}
 
+void	ast_data_default(t_ast_data *td)
+{
+	int	i;
+
+	if (td->pipe)
+	{
+		i = 0;
+		while (td->pipe[i] != -1)
+			close(td->pipe[i++]);
+		free(td->pipe);
+		td->pipe = NULL;
+	}
+	if (td->file)
+	{
+		i = 0;
+		while (td->file[i] != -1)
+			close(td->file[i++]);
+		free(td->file);
+		td->file = NULL;
+	}
+	td->end = 0;
+	td->in = 0;
+	td->out = 1;
+}
+
+void	ast_data_free(t_ast_data *td)
+{
+	ast_data_default(td);
+	free(td);
+}
 
 void    go_through_nodes(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
 {
     if (!ast)
-        return ;
+	{
+		if (data->pid == 0)
+		{
+			data_free(data);
+			ast_data_free(val);
+			tree_free(&ast);
+			exit(0);
+		}
+		else
+			return;
+	}
     else if (!ft_strcmp((char *)ast->value, ">") || !ft_strcmp((char *)ast->value, ">>"))
         right_redir(ast, data, val, envp);
 	else if (ft_strcmp(ast->value, "<") == 0 || ft_strequal((char *)ast->value, "<<"))
@@ -239,10 +284,7 @@ void    go_through_nodes(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
     else if (ft_strcmp(ast->value, "|") == 0)
 		pipe_func(ast, data, val, envp);
 	else
-    {
         cmd_commands(ast, data, val, envp);
-        val->end = 1;
-    }
 }
 
 static void heredoc_func(t_ast *ast, t_data *data)
@@ -283,8 +325,9 @@ void tree_handle(t_ast *ast, t_data *data, char **envp)
 		if (WTERMSIG(status) == SIGINT)
 			exit(1);
 		else
-			exit (status / 256);
+			exit(status/256);
     }
     val = create_ast_data();
     go_through_nodes(ast, data, val, envp);
+	ast_data_free(val);
 }

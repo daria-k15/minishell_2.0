@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heveline <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 16:06:20 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/12 16:06:22 by heveline         ###   ########.fr       */
+/*   Updated: 2021/11/13 09:38:31 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_ast	*create_tree(t_ast *ast, char **array)
+t_ast	*tree_create(t_ast *ast, char **array)
 {
 	int	i;
 

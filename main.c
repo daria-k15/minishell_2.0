@@ -24,14 +24,32 @@ t_data	*create_data(char **envp, int argc, char **argv)
 	return (data);
 }
 
-void	tree_handling(char **array, t_data *data, char **envp)
+void tree_free(t_ast **tree)
+{
+	if (*tree)
+	{
+		if ((*tree)->left != NULL)
+			tree_free(&(*tree)->left);
+		if ((*tree)->right != NULL)
+			tree_free(&(*tree)->right);
+		if ((*tree)->value)
+			free((*tree)->value);/* code */
+		if ((*tree)->prior)
+			free((*tree)->prior);/* code */
+		free((*tree));
+	}
+		(*tree) = NULL;
+}
+
+void	tree(char **array, t_data *data, char **envp)
 {
 	t_ast	*ast;
 
 	ast = NULL;
-	ast = create_tree(ast, array);
-	print_tree_rec(ast, 0);
-	// tree_handle(ast, data, envp);
+	ast = tree_create(ast, array);
+	//tree_print_rec(ast, 0);
+	tree_handle(ast, data, envp);
+	
 }
 
 int	main(int ac, char **av, char **env)
@@ -60,5 +78,6 @@ int	main(int ac, char **av, char **env)
 		tree(array, control, env);
 	}
 	clear_history();
+	data_free(control);
 	return (EXIT_SUCCESS);
 }

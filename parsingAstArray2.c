@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsingAstArray_2.c                                :+:      :+:    :+:   */
+/*   parsingAstArray2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heveline <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 20:18:49 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/12 20:18:51 by heveline         ###   ########.fr       */
+/*   Updated: 2021/11/13 11:26:12 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	**add_val(char **array, char *val)
 		res[i] = array[i];
 		i++;
 	}
-	res[i++] = val;
+	res[i++] = ft_strdup(val);
 	res[i] = NULL;
 	return (res);
 }

@@ -30,10 +30,3 @@ void	tree_sighandler(void)
 	signal(SIGINT, tree_sighand);
 
 }
-
-char	*start_loop(void)
-{
-	sighandler();
-	return (readline("Z&D_Shell: "));
-	// return ("echo hello >> a");
-}

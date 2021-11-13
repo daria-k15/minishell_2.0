@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printAst.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heveline <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 16:07:44 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/12 16:07:46 by heveline         ###   ########.fr       */
+/*   Updated: 2021/11/13 09:39:27 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	printtabs(int n)
 	}
 }
 
-void	print_tree_rec(t_ast *ast, int level)
+void	tree_print_rec(t_ast *ast, int level)
 {
 	if (ast == NULL)
 	{
@@ -36,10 +36,10 @@ void	print_tree_rec(t_ast *ast, int level)
 	printf("value = |%s| prior = |%d|\n ", ast->value, ast->prior);
 	printtabs(level);
 	printf("left\n");
-	print_tree_rec(ast->left, level + 1);
+	tree_print_rec(ast->left, level + 1);
 	printtabs(level);
 	printf("right\n");
-	print_tree_rec(ast->right, level + 1);
+	tree_print_rec(ast->right, level + 1);
 	printtabs(level);
 	printf("done\n");
 }
