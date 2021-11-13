@@ -60,34 +60,26 @@ char **env_array(t_env **env_list)
 
 
 
-void  binary_command(char **cmd_array, t_env **env_list, t_data *data, t_ast_data *val)
+void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *control, t_ast_data *val)
 {
 	char	**env;
 	char	*path;
 	pid_t	pid;
 	int i;
 
-	if (data->pid != 0)
+	if (control->pid != 0)
 		pid = fork();
 	if (pid < 0)
 	{
 		ft_putendl_fd("Fork error", STDERR_FILENO);
 		set_exit(228);
 	}
-	if (pid == 0 || data->pid == 0)
+	if (pid == 0 || control->pid == 0)
 	{
 		dup2(val->out, STDOUT_FILENO);
 		dup2(val->in, STDIN_FILENO);
-		if (val->in != 0)
-		{
-			close(val->in);
-			val->in = 0;
-		}
-		if (val->out != 1)
-		{
-			close(val->out);
-			val->out = 1;
-		}
+		tree_free(&ast);
+		ast_data_free(val);
 		env = env_array(env_list);
 		path = path_handler(cmd_array[0], env);
 		if (execve(path, cmd_array, env) == -1)

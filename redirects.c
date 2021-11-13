@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	left_redir(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
+void	left_redir(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 {
 	int i;
 
@@ -16,17 +16,16 @@ void	left_redir(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
 		ft_putstr_fd(ast->right->value, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);
-		val->end = 1;
 	}
 	else
 	{
 		create_files(val, i);
 		val->in = i;
-		go_through_nodes(ast->left, data, val, envp);
+		go_through_nodes(ast->left, control, val, envp);
 	}
 }
 
-void    right_redir(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
+void    right_redir(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
 {
     int i;
 	
@@ -46,11 +45,12 @@ void    right_redir(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
 	else
 	{
 		create_files(val, i);
-		go_through_nodes(ast->left, data, val, envp);
+		val->out = i;
+		go_through_nodes(ast->left, control, val, envp);
 	}
 }
 
-void pipe_child(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
+void pipe_child(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
 {
 	int fork_pid;
 	int pipe_des[2];
@@ -65,7 +65,7 @@ void pipe_child(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
 		close(pipe_des[0]);
 		if (dup2(pipe_des[1], STDOUT_FILENO) == -1)
 			ft_err("dup2");
-		go_through_nodes(ast->left, data, val, envp);
+		go_through_nodes(ast->left, control, val, envp);
 		close(pipe_des[1]);
 	}
 	else
@@ -73,7 +73,7 @@ void pipe_child(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
 		close(pipe_des[1]);
 		if (dup2(pipe_des[0], STDIN_FILENO) == -1)
 			ft_err("dup2");
-		go_through_nodes(ast->right, data, val, envp);
+		go_through_nodes(ast->right, control, val, envp);
 		close(pipe_des[0]);
 		waitpid(fork_pid, NULL, 0);
 	}
@@ -81,7 +81,7 @@ void pipe_child(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
 
 }
 
-void pipe_func(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
+void pipe_func(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
 {
 	int fork_pid;
 
@@ -90,8 +90,8 @@ void pipe_func(t_ast *ast, t_data *data, t_ast_data *val,char **envp)
 
 	if (fork_pid == 0)
 	{
-		data->pid = 0;
-		pipe_child(ast, data, val, envp);
+		control->pid = 0;
+		pipe_child(ast, control, val, envp);
 	}
 	else
 	{

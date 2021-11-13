@@ -29,13 +29,13 @@ typedef struct s_ast
 	int				prior;
 }					t_ast;
 
-typedef struct s_data
+typedef struct s_ctrl
 {
 	t_env	*env;
 	int		pid;
 	int		fd_out;
 	int		fd_in;
-}			t_data;
+}			t_ctrl;
 
 typedef struct s_ast_data
 {
@@ -43,7 +43,6 @@ typedef struct s_ast_data
 	int *file;
 	int out;
 	int in;
-	int end;
 }		t_ast_data;
 
 
@@ -55,8 +54,8 @@ void	insert_left(t_ast **ast, char *value);
 void	add_value(t_ast **ast, char *value);
 void	tree_print_rec(t_ast *ast, int level);
 t_ast*	tree_create(t_ast *ast, char **array);
-void	ast_data_free(t_ast_data *td);
-void	data_free(t_data *data);
+void	ast_data_free(t_ast_data *val);
+void	t_ctrl_free(t_ctrl *control);
 
 /*-----parsingAstArray.c-----*/
 int		check_char(char *line, char ch, int i);
@@ -128,7 +127,6 @@ void		rl_replace_line(const char *text, int clear_undo);
 
 
 /* ---- executor ------ */
-// void go_through_tree(t_ast *ast, t_data *data, char **envp);
 
 //-----utils.c-----//
 int	check_arg(char *arg);
@@ -150,15 +148,15 @@ void	tree_sighandler(void);
 //------envp.c-----//
 char	*path_handler(char *cmd, char **env);
 char **env_array(t_env **env_list);
-void  binary_command(char **cmd_array, t_env **env_list, t_data *data, t_ast_data *val);
+void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *control, t_ast_data *val);
 
 //-----tree_handling.c-----//
-void tree_handle(t_ast *ast, t_data *data, char **envp);
-void    go_through_nodes(t_ast *ast, t_data *data, t_ast_data *val, char **envp);
-void    right_redir(t_ast *ast, t_data *data, t_ast_data *val,char **envp);
-void	left_redir(t_ast *ast, t_data *data, t_ast_data *val, char **envp);
-
-
+void tree_handle(t_ast *ast, t_ctrl *control, char **envp);
+void    go_through_nodes(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp);
+void    right_redir(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp);
+void	left_redir(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp);
+void pipe_func(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp);
+void ctrl_free(t_ctrl *control);
 //----set_exit.c-----//
 static int  new_exit(const int *id);
 int get_exit(void);

@@ -53,7 +53,6 @@ t_ast_data  *create_ast_data(void)
     val = malloc(sizeof(t_ast_data));
     if (!val)
         return(NULL);
-    val->end = 0;
     val->file = NULL;
     val->in = 0;
     val->out = 1;
@@ -189,87 +188,92 @@ void    create_files(t_ast_data *val, int fd)
     val->file = tmp;
 }
 
-void clean_node(t_ast *ast, t_data *data, t_ast_data *val)
+void clean_node(t_ast *ast, t_ctrl *data, t_ast_data *val)
 {
-	;
+	ast_data_free(val);
+	ctrl_free(data);
+	tree_free(&ast);
 }
 
-void empty_cmd(t_ast *ast, t_data *data, t_ast_data *val, char **array)
+void empty_cmd(t_ast *ast, t_ctrl *data, t_ast_data *val, char **array)
 {
 	free(array);
 	clean_node(ast, data, val);
 }
 
-void    cmd_commands(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
+void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 {
         char    **cmd_array;
 
         cmd_array = split_values(ast->value, envp);
 		if (cmd_array[0] == NULL)
-			empty_cmd(ast, data, val, cmd_array);
-    	if (ft_strcmp(cmd_array[0], "env") == 0)
-			env_builtin(cmd_array, data->env, val->out);
+		{
+			empty_cmd(ast, control, val, cmd_array);
+			exit(0);
+		}
+		if (ft_strcmp(cmd_array[0], "env") == 0)
+			env_builtin(cmd_array, control->env, val->out);
 		else if (ft_strcmp(cmd_array[0], "export") == 0)
-			export_builtin(cmd_array, &(data->env), val->out);
+			export_builtin(cmd_array, &(control->env), val->out);
 		else if (ft_strcmp(cmd_array[0], "unset") == 0)
-			unset_builtin(cmd_array, &(data->env), val->out);
+			unset_builtin(cmd_array, &(control->env), val->out);
 		else if (ft_strcmp(cmd_array[0], "echo") == 0)
 			echo_builtin(cmd_array, val->out);
 		else if (ft_strcmp(cmd_array[0], "cd") == 0)
-			cd_builtin(cmd_array, &(data->env), val->out);
+			cd_builtin(cmd_array, &(control->env), val->out);
 		else if (ft_strcmp(cmd_array[0], "exit") == 0)
 			exit_builtin(cmd_array, val->out);
 		else if (ft_strcmp(cmd_array[0], "pwd") == 0)
 			pwd_builtin(cmd_array, val->out);
 		else
-			binary_command(cmd_array, &(data->env), data, val);
-		
+			binary_command(ast, cmd_array, &(control->env), control, val);
+		if (!control->pid)
+			exit(get_exit());
 }
 
-void	data_free(t_data *data)
+void	ctrl_free(t_ctrl *control)
 {
-	free_env(data->env);
-	free(data);
+	free_env(control->env);
+	free(control);
 }
 
-void	ast_data_default(t_ast_data *td)
+void	ast_data_default(t_ast_data *val)
 {
 	int	i;
 
-	if (td->pipe)
+	if (val->pipe)
 	{
 		i = 0;
-		while (td->pipe[i] != -1)
-			close(td->pipe[i++]);
-		free(td->pipe);
-		td->pipe = NULL;
+		while (val->pipe[i] != -1)
+			close(val->pipe[i++]);
+		free(val->pipe);
+		val->pipe = NULL;
 	}
-	if (td->file)
+	if (val->file)
 	{
 		i = 0;
-		while (td->file[i] != -1)
-			close(td->file[i++]);
-		free(td->file);
-		td->file = NULL;
+		while (val->file[i] != -1)
+			close(val->file[i++]);
+		free(val->file);
+		val->file = NULL;
 	}
-	td->end = 0;
-	td->in = 0;
-	td->out = 1;
+	val->in = 0;
+	val->out = 1;
 }
 
-void	ast_data_free(t_ast_data *td)
+void	ast_data_free(t_ast_data *val)
 {
-	ast_data_default(td);
-	free(td);
+	ast_data_default(val);
+	free(val);
 }
 
-void    go_through_nodes(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
+void    go_through_nodes(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 {
     if (!ast)
 	{
-		if (data->pid == 0)
+		if (control->pid == 0)
 		{
-			data_free(data);
+			ctrl_free(control);
 			ast_data_free(val);
 			tree_free(&ast);
 			exit(0);
@@ -278,16 +282,16 @@ void    go_through_nodes(t_ast *ast, t_data *data, t_ast_data *val, char **envp)
 			return;
 	}
     else if (!ft_strcmp((char *)ast->value, ">") || !ft_strcmp((char *)ast->value, ">>"))
-        right_redir(ast, data, val, envp);
+        right_redir(ast, control, val, envp);
 	else if (ft_strcmp(ast->value, "<") == 0 || ft_strequal((char *)ast->value, "<<"))
-		left_redir(ast, data, val, envp);
+		left_redir(ast, control, val, envp);
     else if (ft_strcmp(ast->value, "|") == 0)
-		pipe_func(ast, data, val, envp);
+		pipe_func(ast, control, val, envp);
 	else
-        cmd_commands(ast, data, val, envp);
+        cmd_commands(ast, control, val, envp);
 }
 
-static void heredoc_func(t_ast *ast, t_data *data)
+static void heredoc_func(t_ast *ast, t_ctrl *control)
 {
     int i;
     
@@ -300,12 +304,12 @@ static void heredoc_func(t_ast *ast, t_data *data)
         write_to_tmp(ast->right, i);
 		close(i);        
     }
-    heredoc_func(ast->left, data);
-    heredoc_func(ast->right, data);
+    heredoc_func(ast->left, control);
+    heredoc_func(ast->right, control);
 }
 
 
-void tree_handle(t_ast *ast, t_data *data, char **envp)
+void tree_handle(t_ast *ast, t_ctrl *control, char **envp)
 {
     pid_t     pid;
     int     status;
@@ -318,7 +322,7 @@ void tree_handle(t_ast *ast, t_data *data, char **envp)
         if (pid == 0)
         {
             tree_sighandler();
-            heredoc_func(ast, data);
+            heredoc_func(ast, control);
 			exit(0);
         }
         waitpid(pid, &status, 0);
@@ -328,6 +332,6 @@ void tree_handle(t_ast *ast, t_data *data, char **envp)
 			exit(status/256);
     }
     val = create_ast_data();
-    go_through_nodes(ast, data, val, envp);
+    go_through_nodes(ast, control, val, envp);
 	ast_data_free(val);
 }

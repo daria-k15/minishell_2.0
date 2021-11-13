@@ -10,18 +10,18 @@ size_t	ft_arraylen(char **str)
 	return (n);
 }
 
-t_data	*create_data(char **envp, int argc, char **argv)
+t_ctrl	*ctrl_create(char **envp, int argc, char **argv)
 {
-	t_data	*data;
+	t_ctrl	*control;
 
 	(void)argc;
 	(void)argv;
-	data = malloc(sizeof(t_data));
-	data->env = env_init(envp);
-	data->fd_in = dup(STDIN_FILENO); //need to change to dup2(int, int)
-	data->fd_out = dup(STDOUT_FILENO); //same
-	data->pid = 1;
-	return (data);
+	control = malloc(sizeof(t_ctrl));
+	control->env = env_init(envp);
+	control->fd_in = dup(STDIN_FILENO); //need to change to dup2(int, int)
+	control->fd_out = dup(STDOUT_FILENO); //same
+	control->pid = 1;
+	return (control);
 }
 
 void tree_free(t_ast **tree)
@@ -34,31 +34,31 @@ void tree_free(t_ast **tree)
 			tree_free(&(*tree)->right);
 		if ((*tree)->value)
 			free((*tree)->value);/* code */
-		if ((*tree)->prior)
-			free((*tree)->prior);/* code */
+		//if ((*tree)->prior)
+		//	free((*tree)->prior);/* code */
 		free((*tree));
 	}
-		(*tree) = NULL;
+	(*tree) = NULL;
 }
 
-void	tree(char **array, t_data *data, char **envp)
+void	tree(char **array, t_ctrl *control, char **envp)
 {
 	t_ast	*ast;
 
 	ast = NULL;
 	ast = tree_create(ast, array);
 	//tree_print_rec(ast, 0);
-	tree_handle(ast, data, envp);
-	
+	tree_handle(ast, control, envp);
+	tree_free(&ast);
 }
 
 int	main(int ac, char **av, char **env)
 {
 	char	*line;
 	char	**array;
-	t_data	*control;
+	t_ctrl	*control;
 
-	control = create_data(env, ac, av);
+	control = ctrl_create(env, ac, av);
 	while (1)
 	{
 		sighandler();
@@ -78,6 +78,6 @@ int	main(int ac, char **av, char **env)
 		tree(array, control, env);
 	}
 	clear_history();
-	data_free(control);
+	ctrl_free(control);
 	return (EXIT_SUCCESS);
 }
