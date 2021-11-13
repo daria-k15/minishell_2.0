@@ -283,7 +283,7 @@ void    go_through_nodes(t_ast *ast, t_ctrl *control, t_ast_data *val, char **en
 	}
     else if (!ft_strcmp((char *)ast->value, ">") || !ft_strcmp((char *)ast->value, ">>"))
         right_redir(ast, control, val, envp);
-	else if (ft_strcmp(ast->value, "<") == 0 || ft_strequal((char *)ast->value, "<<"))
+	else if (ft_strcmp((char *)ast->value, "<") == 0 || ft_strequal((char *)ast->value, "<<"))
 		left_redir(ast, control, val, envp);
     else if (ft_strcmp(ast->value, "|") == 0)
 		pipe_func(ast, control, val, envp);
