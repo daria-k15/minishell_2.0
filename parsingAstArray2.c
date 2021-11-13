@@ -48,8 +48,13 @@ char	*redirect_parse(char *line, int *i)
 			l++;
 		tmp = ft_substr(line, l, j - l);
 	}
-	if (tmp[ft_strlen(tmp) - 1] == ' ')
-		tmp = ft_substr(tmp, 0, ft_strlen(tmp) - 1);
+	l = 1;
+	if (tmp[ft_strlen(tmp) - l] == ' ')
+	{
+		while (tmp[ft_strlen(tmp) - l] == ' ')
+			l++;
+		tmp = ft_substr(tmp, 0, ft_strlen(tmp) - l + 1);
+	}
 	return (redirect2(tmp, line, &j));
 }
 
