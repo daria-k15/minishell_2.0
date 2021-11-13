@@ -62,20 +62,21 @@ void pipe_child(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
 
 	if (fork_pid == 0)
 	{
-		close(pipe_des[0]);
+		
 		if (dup2(pipe_des[1], STDOUT_FILENO) == -1)
 			ft_err("dup2");
-		go_through_nodes(ast->left, control, val, envp);
+		close(pipe_des[0]);
 		close(pipe_des[1]);
+		go_through_nodes(ast->left, control, val, envp);
 	}
 	else
 	{
-		close(pipe_des[1]);
 		if (dup2(pipe_des[0], STDIN_FILENO) == -1)
 			ft_err("dup2");
-		go_through_nodes(ast->right, control, val, envp);
+		close(pipe_des[1]);
 		close(pipe_des[0]);
 		waitpid(fork_pid, NULL, 0);
+		go_through_nodes(ast->right, control, val, envp);
 	}
 	exit(1);
 
