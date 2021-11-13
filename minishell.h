@@ -66,7 +66,7 @@ char	*double_quote_parse(char *line, int *i);
 
 /*-----parsingAstArray2.c-----*/
 char	*redirect2(char *tmp, char *line, int *j);
-char	*redirect_parse(char *line, int *i, char **envp);
+char	*redirect_parse(char *line, int *i);
 int		find_redir(char *line);
 char	**add_val(char **array, char *val);
 char	*parsing2(char *line);
@@ -141,7 +141,7 @@ int	check_redir_pipe(char *line);
 
 //-----signals.c-----//
 void	handlerint(int signal);
-//void	sighandler(void);
+void	sighandler(void);
 char	*start_loop(void);
 void	tree_sighandler(void);
 

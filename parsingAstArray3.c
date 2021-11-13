@@ -29,7 +29,7 @@ char	**pars_to_array(char *line, char **array, char **envp, int *i)
 	{
 		if (line[(*i)] == '>' || line[(*i)] == '<' || line[(*i)] == '|')
 		{
-			line = redirect_parse(line, i, envp);
+			line = redirect_parse(line, i);
 			tmp = ft_substr(line, 0, find_redir(line));
 			array = add_val(array, tmp);
 			line = ft_substr(line, find_redir(line),
@@ -53,7 +53,6 @@ char	**parsing(char *line, char **envp)
 {
 	int		i;
 	char	**array;
-	char	*tmp;
 
 	i = -1;
 	array = (char **)malloc(sizeof(char *));

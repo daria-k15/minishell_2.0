@@ -193,7 +193,7 @@ int unset_arg_isok(char *arg)
 
   i = 0;
   while (arg[i])
-    if (arg[i] != '_' && !ft_isalnum(arg[i++]) || ft_isdigit(arg[0]))
+    if ((arg[i] != '_' && !ft_isalnum(arg[i++])) || ft_isdigit(arg[0]))
       return (0);
   return (1);
 }

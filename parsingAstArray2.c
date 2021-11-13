@@ -33,7 +33,7 @@ char	*redirect2(char *tmp, char *line, int *j)
 	return (line);
 }
 
-char	*redirect_parse(char *line, int *i, char **envp)
+char	*redirect_parse(char *line, int *i)
 {
 	int		j;
 	char	*tmp;
