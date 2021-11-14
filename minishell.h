@@ -148,7 +148,7 @@ void	sigproc(void);
 
 //------envp.c-----//
 char	*path_handler(char *cmd, char **env);
-char **env_array(t_env **env_list);
+char **env_to_array(t_env **env_list);
 void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *control, t_ast_data *val);
 
 //-----tree_handling.c-----//

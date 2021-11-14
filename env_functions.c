@@ -272,3 +272,34 @@ void delete_env(t_env *deleted, t_env **env_list)
     free(deleted->value);
     free(deleted);
 }
+
+char **env_to_array(t_env **env_list)
+{
+  int i;
+  t_env *tmp;
+  char **array;
+  char *equal;
+
+  i = 0; 
+  tmp = *env_list; 
+  while (tmp)
+  {
+    i++;
+    tmp = tmp->next;
+  }
+  array = (char **)malloc(sizeof(char *) * i);
+  if (!array)
+    return (NULL);
+  tmp = *env_list;
+  i = 0;
+  while (tmp)
+  {
+	equal = ft_strjoin(tmp->key, "="); //protect
+    array[i] = ft_strjoin(equal, tmp->value); //protect and clean what was created
+    i++;
+    tmp = tmp->next;
+    free(equal);
+  }
+  array[i] = NULL;
+  return array;
+}

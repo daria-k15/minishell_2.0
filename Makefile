@@ -14,6 +14,7 @@ SOURCES =	main.c\
 			printAst.c\
 			builtins.c\
 			builtins_cd.c\
+			builtins_export_exit.c\
 			dollar_parse.c\
 			env_functions.c\
 			tree_handling.c\
@@ -23,7 +24,7 @@ SOURCES =	main.c\
 			utils.c \
 			utils_2.c\
 			signals.c \
-			envp.c \
+			binary_command.c \
 			exit_status.c \
 			redirects.c
 
