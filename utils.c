@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heveline <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 16:20:58 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/13 16:21:26 by heveline         ###   ########.fr       */
+/*   Updated: 2021/11/14 14:38:39 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,14 @@ void	free_array(char **str)
 		free(str[i++]);
 	free(str[i]);
 	free(str);
+}
+
+size_t	ft_arraylen(char **str)
+{
+	size_t	n;
+
+	n = 0;
+	while (*str++)
+		n++;
+	return (n);
 }

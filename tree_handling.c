@@ -336,3 +336,31 @@ void tree_handle(t_ast *ast, t_ctrl *control, char **envp)
     go_through_nodes(ast, control, val, envp);
 	ast_data_free(val);
 }
+
+void tree_free(t_ast **tree)
+{
+	if (*tree)
+	{
+		if ((*tree)->left != NULL)
+			tree_free(&(*tree)->left);
+		if ((*tree)->right != NULL)
+			tree_free(&(*tree)->right);
+		if ((*tree)->value)
+			free((*tree)->value);/* code */
+		//if ((*tree)->prior)
+		//	free((*tree)->prior);/* code */
+		free((*tree));
+	}
+	(*tree) = NULL;
+}
+
+void	tree(char **array, t_ctrl *control, char **envp)
+{
+	t_ast	*ast;
+
+	ast = NULL;
+	ast = tree_create(ast, array);
+	tree_print_rec(ast, 0);
+	tree_handle(ast, control, envp);
+	tree_free(&ast);
+}

@@ -56,6 +56,8 @@ void	tree_print_rec(t_ast *ast, int level);
 t_ast*	tree_create(t_ast *ast, char **array);
 void	ast_data_free(t_ast_data *val);
 void	t_ctrl_free(t_ctrl *control);
+void	tree_free(t_ast **tree);
+void	tree(char **array, t_ctrl *control, char **envp);
 
 /*-----parsingAstArray.c-----*/
 int		check_char(char *line, char ch, int i);
@@ -133,6 +135,7 @@ int check_hero(t_ast *ast);
 int	check_redir(t_ast *ast);
 void	ft_err(char *str);
 void	free_array(char **str);
+size_t	ft_arraylen(char **str);
 
 //-----utils_2.c-----//
 int	ft_strequal(const char *str1, const char *str2);
