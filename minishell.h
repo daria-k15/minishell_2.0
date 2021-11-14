@@ -51,7 +51,7 @@ typedef struct s_ast_data
 //-------ast.c
 t_ast*	create_node(char *value);
 void	insert_left(t_ast **ast, char *value);
-void	add_value(t_ast **ast, char *value);
+t_ast	*add_value(t_ast **ast, char *value);
 void	tree_print_rec(t_ast *ast, int level);
 t_ast*	tree_create(t_ast *ast, char **array);
 void	ast_data_free(t_ast_data *val);
@@ -86,7 +86,6 @@ t_ast*	insert_val(t_ast **ast, char *value);
  int check_arg(char *arg);
  void tree_print_rec(t_ast *ast, int level);
  t_ast*	create_node(char *value);
-void	add_value(t_ast **ast, char *value); 
 int check_redir(t_ast *ast);
 void tree_free(t_ast **tree);
 

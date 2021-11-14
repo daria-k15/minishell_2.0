@@ -19,7 +19,7 @@ void	handlerint(int signal)
 	rl_redisplay();
 	write(1, "  \b\b\n", 5);
 	rl_on_new_line();
-	rl_replace_line("", 0);
+	// rl_replace_line("", 0);
 	rl_redisplay();
 	set_exit(1);
 }

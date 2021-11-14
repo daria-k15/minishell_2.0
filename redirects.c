@@ -12,7 +12,7 @@ void	left_redir(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
 	if (i == -1)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd("Z&D_SHell: ", STDERR_FILENO);
 		ft_putstr_fd(ast->right->value, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);
@@ -37,7 +37,7 @@ void    right_redir(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
 			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
 	if (i == -1)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd("Z&D_SHell: ", STDERR_FILENO);
 		ft_putstr_fd(ast->right->value, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);

@@ -22,7 +22,7 @@ t_ast	*tree_create(t_ast *ast, char **array)
 		if (ast == NULL)
 			ast = create_node(array[i]);
 		else
-			add_value(&ast, array[i]);
+			ast = add_value(&ast, array[i]);
 		i++;
 	}
 	return (ast);
@@ -85,33 +85,147 @@ int	return_prior(char *value)
 		return (3);
 	else if (ft_strcmp(value, "|") == 0)
 		return (2);
-	else if (check_arg(value))
-		return (1);
+	// else if (check_arg(value))
+	// 	return (1);
 	return (0);
 }
 
-void	add_value(t_ast **ast, char *value)
+t_ast *addtoend(t_ast **ast, t_ast *new, t_ast *tmp)
 {
-	t_ast	*tmp;
+	while (tmp->left != NULL && return_prior(tmp->left->value) == 3)
+		tmp = tmp->left;
+	if (tmp->right == NULL)
+		tmp->right = new;
+	else
+		tmp->left = new;
+	return (*ast);
+}
+
+t_ast	*addnode(t_ast **ast, t_ast *new, t_ast *tmp, char *value)
+{
+	if (return_prior(tmp->right->value) !=  3 || return_prior(value) == 2)
+	{
+		new->left = tmp->right;
+		tmp->right = new;
+		return (*ast);
+	}
+	else
+	{
+		while (tmp->right != NULL && ft_strcmp(tmp->right->value, "|") == 0)
+			tmp = tmp->right;
+		while (tmp->right != NULL && return_prior(tmp->right->value) == 3)
+			tmp = tmp->right;
+		while (tmp->left != NULL && return_prior(tmp->left->value) == 3)
+			tmp = tmp->left;
+		new->left = tmp->left;
+		tmp->left = new;
+		return (*ast);
+	}
+}
+
+t_ast *fnode(t_ast **ast, t_ast *new, t_ast *tmp, char *value)
+{
+	if (return_prior((*ast)->value) != 3 || ft_strcmp(value, "|") == 0)
+		{
+			new->left = *ast;
+			return (new);
+		}
+		else
+		{
+			while (tmp->left != NULL && return_prior(tmp->left->value) == 3)
+				tmp = tmp->left;
+			new->left = tmp->left;
+			tmp->left = new;
+		return (*ast);
+		}
+}
+
+t_ast *firstnode(t_ast **ast, t_ast *new, t_ast *tmp, char *value)
+{
 	int		prior;
 
 	prior = return_prior(value);
-	if ((*ast)->prior == 3 && prior == 0)
-		(*ast)->right = create_node(value);
-	else if ((*ast)->prior == 3 && prior == 2)
+	if (prior == 2 || prior == 3)
+		return (fnode(ast, new, tmp, value));
+	if ((*ast)->prior == 3)
 	{
-		tmp = create_node(value);
-		tmp->left = *ast;
-		*ast = tmp;
+		while (tmp->left != NULL && return_prior(tmp->left->value) == 3)
+			tmp = tmp->left;
+		if (tmp->right == NULL)
+			tmp->right = new;
+		else
+			tmp->left = new;
+		// tmp3->left = tmp;
+		return (*ast);
 	}
-	else if ((*ast)->prior == 2 && prior == 0)
-		(*ast)->right = create_node(value);
-	else if ((*ast)->prior > prior)
-		insert_left(&(*ast)->left, value);
-	else
-	{
-		tmp = create_node(value);
-		tmp->left = *ast;
-		*ast = tmp;
-	}
+
+		while (tmp->left != NULL)
+			tmp = tmp->left;
+		tmp->left = new;
+		return (*ast);
 }
+
+t_ast	*add_value(t_ast **ast, char *value)
+{
+	t_ast	*tmp;
+	t_ast	*new;
+	t_ast	*tmp3;
+	int		prior;
+	int i = 0;
+
+	new = create_node(value);
+	tmp = *ast;
+	prior = return_prior(value);
+	if ((*ast)->prior == 2)
+	{
+		while (tmp->right != NULL)
+		{
+			if ((ft_strcmp(value, "|") == 0 || return_prior(value) == 3)
+			&& ft_strcmp(tmp->right->value, "|") != 0)
+				return (addnode(ast, new, tmp, value));
+			if (return_prior(tmp->value) == 3)
+				return (addtoend(ast, new, tmp));
+			tmp = tmp->right;
+		}
+		tmp->right = new;
+		return (*ast);
+	}
+	return (firstnode(ast, new, tmp, value));
+	// else if (prior == 2 || prior == 3)
+	// {
+	// 	if (return_prior((*ast)->value) != 3 || ft_strcmp(value, "|") == 0)
+	// 	{
+	// 		new->left = *ast;
+	// 		*ast = new;
+	// 	}
+	// 	else
+	// 	{
+	// 		while (tmp->left != NULL && return_prior(tmp->left->value) == 3)
+	// 			tmp = tmp->left;
+	// 		new->left = tmp->left;
+	// 		tmp->left = new;
+	// 	return (*ast);
+	// 	}
+	// }
+	// else if ((*ast)->prior == 3)
+	// {
+	// 	// tmp3 = tmp;
+	// 	// printf("tmp3->value = %s\n", tmp->value);
+	// 	while (tmp->left != NULL && return_prior(tmp->left->value) == 3)
+	// 		tmp = tmp->left;
+	// 	if (tmp->right == NULL)
+	// 		tmp->right = new;
+	// 	else
+	// 		tmp->left = new;
+	// 	// tmp3->left = tmp;
+	// 	return (*ast);
+	// }
+
+	// 	while (tmp->left != NULL)
+	// 		tmp = tmp->left;
+	// 	tmp->left = new;
+	// 	return (*ast);
+}
+
+
+
