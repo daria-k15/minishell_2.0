@@ -49,7 +49,7 @@ typedef struct s_ast_data
 
 
 //-------ast.c
-t_ast*	create_node(char *value);
+t_ast*	node_create(char *value);
 void	insert_left(t_ast **ast, char *value);
 void	add_value(t_ast **ast, char *value);
 void	tree_print_rec(t_ast *ast, int level);
@@ -85,7 +85,6 @@ int		if_key(char c);
 t_ast*	insert_val(t_ast **ast, char *value);
  int check_arg(char *arg);
  void tree_print_rec(t_ast *ast, int level);
- t_ast*	create_node(char *value);
 void	add_value(t_ast **ast, char *value); 
 int check_redir(t_ast *ast);
 void tree_free(t_ast **tree);
@@ -108,7 +107,7 @@ void print_export_list(t_env *start, int fdout);
 void ft_swap(t_env **start, t_env *a, t_env *b);
 void bubbleSort(t_env **start);
 t_env	*ft_lastnode(t_env *lst);
-int create_env_node(t_env **lst, char **d);
+int env_node_create(t_env **lst, char **d);
 t_env *env_init(char **env);
 t_env *env_cpy(t_env *head);
 void free_env(t_env *head);

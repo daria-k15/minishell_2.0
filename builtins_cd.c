@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 11:09:16 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/14 12:14:26 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/14 13:25:36 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void	change_node(char *env_name, char *wd, t_env **env_list)
 	{
 		directory[0] = ft_strdup(env_name);
 		directory[1] = ft_strdup(wd);
-		create_env_node(env_list, directory);
+		env_node_create(env_list, directory);
 	}
 }
 
 void change_dir(char *path, t_env **env_list, char *cwd)
 {
 	if (chdir(path))
-		ft_putendl_fd("Error: the path is incorrect", 2);
+		ft_putendl_fd("Error: chdir fails with the given path", 2);
     else
       {
 		change_node("OLDPWD", cwd, env_list);
@@ -47,9 +47,6 @@ void change_dir(char *path, t_env **env_list, char *cwd)
 void	cd_to_home(char *cwd, t_env **env_list) //exit in case of err?
 {
 	t_env	*home;
-	t_env	*current;
-	char	*tempvalue;
-	char	*directory[2];
     
     home = env_exists(env_list, "HOME");
     if (home)
@@ -61,9 +58,6 @@ void	cd_to_home(char *cwd, t_env **env_list) //exit in case of err?
 void cd_builtin(char **cmd_array, t_env **env_list)
 {
   char *cwd;
-  t_env *current;
-  char *tempvalue;
-  char *directory[2];
 
   cwd = getcwd(NULL, 0);
   if (!cmd_array[1])

@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 16:06:20 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/13 09:38:31 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/14 13:32:04 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_ast	*tree_create(t_ast *ast, char **array)
 	while (array[i])
 	{
 		if (ast == NULL)
-			ast = create_node(array[i]);
+			ast = node_create(array[i]);
 		else
 			add_value(&ast, array[i]);
 		i++;
@@ -28,7 +28,7 @@ t_ast	*tree_create(t_ast *ast, char **array)
 	return (ast);
 }
 
-t_ast	*create_node(char *value)
+t_ast	*node_create(char *value)
 {
 	t_ast	*node;
 
@@ -97,20 +97,20 @@ void	add_value(t_ast **ast, char *value)
 
 	prior = return_prior(value);
 	if ((*ast)->prior == 3 && prior == 0)
-		(*ast)->right = create_node(value);
+		(*ast)->right = node_create(value);
 	else if ((*ast)->prior == 3 && prior == 2)
 	{
-		tmp = create_node(value);
+		tmp = node_create(value);
 		tmp->left = *ast;
 		*ast = tmp;
 	}
 	else if ((*ast)->prior == 2 && prior == 0)
-		(*ast)->right = create_node(value);
+		(*ast)->right = node_create(value);
 	else if ((*ast)->prior > prior)
 		insert_left(&(*ast)->left, value);
 	else
 	{
-		tmp = create_node(value);
+		tmp = node_create(value);
 		tmp->left = *ast;
 		*ast = tmp;
 	}

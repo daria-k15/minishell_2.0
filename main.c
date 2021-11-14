@@ -10,7 +10,7 @@ size_t	ft_arraylen(char **str)
 	return (n);
 }
 
-t_ctrl	*ctrl_create(char **envp, int argc, char **argv)
+t_ctrl	*ctrl_init(char **envp, int argc, char **argv)
 {
 	t_ctrl	*control;
 
@@ -58,7 +58,7 @@ int	main(int ac, char **av, char **env)
 	char	**array;
 	t_ctrl	*control;
 
-	control = ctrl_create(env, ac, av);
+	control = ctrl_init(env, ac, av);
 	while (1)
 	{
 		sighandler();

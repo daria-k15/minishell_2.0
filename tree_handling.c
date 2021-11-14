@@ -46,7 +46,7 @@ static void write_to_tmp(t_ast *ast, int fd)
 
 
 
-t_ast_data  *create_ast_data(void)
+t_ast_data  *ast_data_init(void)
 {
     t_ast_data  *val;
 
@@ -332,7 +332,7 @@ void tree_handle(t_ast *ast, t_ctrl *control, char **envp)
 		else
 			exit(status/256);
     }
-    val = create_ast_data();
+    val = ast_data_init();
     go_through_nodes(ast, control, val, envp);
 	ast_data_free(val);
 }

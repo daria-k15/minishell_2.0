@@ -114,7 +114,7 @@ t_env	*ft_lastnode(t_env *lst)
 	return (lst);
 }
 
-int create_env_node(t_env **lst, char **d)
+int env_node_create(t_env **lst, char **d)
 {
   t_env *new;
 
@@ -146,7 +146,7 @@ t_env *env_init(char **env)
 	  while (a < ft_arraylen(env) && !n)
     {
       char **d = ft_split_env(env[a++], '=');
-      n = create_env_node(&start, d);
+      n = env_node_create(&start, d);
     }
 		return start;
 }
@@ -257,7 +257,7 @@ void change_envlist(char *new_env, t_env **env_list)
       free(tempvalue);
     }
     else
-      create_env_node(env_list, temp);
+      env_node_create(env_list, temp);
 }
 
 void delete_env(t_env *deleted, t_env **env_list)
