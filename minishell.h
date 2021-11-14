@@ -96,7 +96,7 @@ void tree_free(t_ast **tree);
 void env_builtin(char **cmd_array, t_env *start, int fdout);
 void echo_builtin(char **cmd_array, int fdout);
 void pwd_builtin(char **cmd_array, int fdout);
-void cd_builtin(char **cmd_array, t_env **env_list, int fdout);
+void cd_builtin(char **cmd_array, t_env **env_list);
 void exit_builtin(char **cmd_array, int fdout);
 void export_builtin(char **cmd_array, t_env **env_list, int fdout);
 void unset_builtin(char **cmd_array, t_env **env_list, int fdout);

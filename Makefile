@@ -13,6 +13,7 @@ SOURCES =	main.c\
 			ast.c\
 			printAst.c\
 			builtins.c\
+			builtins_cd.c\
 			dollar_parse.c\
 			env_functions.c\
 			tree_handling.c\

@@ -13,7 +13,7 @@ void env_builtin(char **cmd_array, t_env *start, int fdout)
         ft_putstr_fd(temp->value, fdout);
         ft_putchar_fd('\n', fdout);
       }
-        temp = temp->next;
+      temp = temp->next;
     }
     free_array(cmd_array);
     set_exit(0);
@@ -147,97 +147,3 @@ void exit_builtin(char **cmd_array, int fdout)
 }
 
 
-void cd_builtin(char **cmd_array, t_env **env_list, int fdout)
-{
-  char *cwd;
-  t_env *home;
-  t_env *current;
-  char *tempvalue;
-  char *directory[2];
-
-  cwd = getcwd(NULL, 0);
-  if (cmd_array[1] == NULL)
-  {
-    home = env_exists(env_list, "HOME");
-    if (home)
-    {
-      if (chdir(home->value) != 0)
-        printf("Error while going to Home, cd with no args");
-      else
-      {
-        current = env_exists(env_list, "OLDPWD");
-        if (current)
-        {
-            tempvalue = current->value;
-            current->value = cwd;
-            free(tempvalue);
-        }
-        else
-        {
-          directory[0] = "OLDPWD";
-          directory[1] = cwd;
-          create_env_node(env_list, directory);
-          // free(d);
-        }
-        current = env_exists(env_list, "PWD");
-        if (current)
-        {
-            tempvalue = current->value;
-            current->value = home->value;
-            free(tempvalue);
-        }
-        else
-        {
-          directory[0] = "PWD";
-          directory[1] = home->value;
-          create_env_node(env_list, directory);
-          // free(d);
-        }
-      }
-    }
-    else
-      printf("No HOME path");
-    free(home);
-  }
-  else
-  {
-    if (chdir(cmd_array[1]) != 0)
-      printf("the path is incorrect");
-    else
-      {
-
-        current = env_exists(env_list, "OLDPWD");
-        if (current)
-        {
-            tempvalue = current->value;
-            current->value = cwd;
-            free(tempvalue);
-        }
-        else
-        {
-          directory[0] = "OLDPWD";
-          directory[1] = cwd;
-          create_env_node(env_list, directory);
-          // free(d);
-        }
-        current = env_exists(env_list, "PWD");
-        cwd = getcwd(NULL, 0);
-        if (current)
-        {
-            tempvalue = current->value;
-            current->value = cwd;
-            free(tempvalue);
-        }
-        else
-        {
-          directory[0] = "PWD";
-          directory[1] = cwd;
-          create_env_node(env_list, directory);
-          // free(d);
-        }
-      }
-
-  }
-  free_array(cmd_array);
-  free(cwd);
-}
