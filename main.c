@@ -10,6 +10,30 @@ size_t	ft_arraylen(char **str)
 	return (n);
 }
 
+void shlvl(t_env *env_list)
+{
+	t_env	*current;
+	int		shlvl;
+	
+	current = env_exists(env_list, "SHLVL");
+	if (current)
+	{
+		printf("here");
+		if (current->value)
+		{
+			shlvl = ft_atoi(current->value);
+			free(current->value);
+		}
+		if (!current->value || shlvl < 0)
+			shlvl = 0;
+		shlvl++;
+		current->value = ft_itoa(shlvl);
+	}
+	else
+		change_envlist("SHLVL=1", env_list);
+
+}
+
 t_ctrl	*ctrl_init(char **envp, int argc, char **argv)
 {
 	t_ctrl	*control;
@@ -21,6 +45,7 @@ t_ctrl	*ctrl_init(char **envp, int argc, char **argv)
 	control->fd_in = dup(STDIN_FILENO); //need to change to dup2(int, int)
 	control->fd_out = dup(STDOUT_FILENO); //same
 	control->pid = 1;
+	shlvl(&(control->env));
 	return (control);
 }
 
