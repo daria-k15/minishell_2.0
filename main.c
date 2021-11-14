@@ -1,55 +1,63 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/14 14:40:33 by qcesar            #+#    #+#             */
+/*   Updated: 2021/11/14 14:59:30 by qcesar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-size_t	ft_arraylen(char **str)
+void	shlvl(t_env *env_list)
 {
-	size_t	n;
+	t_env	*current;
+	int		shlvl;
 
-	n = 0;
-	while (*str++)
-		n++;
-	return (n);
+	current = env_exists(env_list, "SHLVL");
+	if (current)
+	{
+		if (current->value)
+		{
+			shlvl = ft_atoi(current->value);
+			free(current->value);
+		}
+		if (!current->value || shlvl < 0)
+			shlvl = 0;
+		shlvl++;
+		current->value = ft_itoa(shlvl);
+	}
+	else
+		change_envlist("SHLVL=1", env_list);
 }
 
-t_ctrl	*ctrl_create(char **envp, int argc, char **argv)
+t_ctrl	*ctrl_init(char **envp, int argc, char **argv)
 {
 	t_ctrl	*control;
+	t_env	*oldpwd;
 
 	(void)argc;
 	(void)argv;
-	control = malloc(sizeof(t_ctrl));
+	control = (t_ctrl *)malloc(sizeof(t_ctrl));
 	control->env = env_init(envp);
-	control->fd_in = dup(STDIN_FILENO); //need to change to dup2(int, int)
-	control->fd_out = dup(STDOUT_FILENO); //same
+	control->fd_in = dup(STDIN_FILENO); 
+	control->fd_out = dup(STDOUT_FILENO); 
 	control->pid = 1;
+	shlvl(&(control->env));
+	oldpwd = env_exists(&(control->env), "OLDPWD");
+	if (oldpwd)
+		delete_env(oldpwd, &(control->env));
 	return (control);
 }
 
-void tree_free(t_ast **tree)
+int	clear_in_the_end(t_ctrl *control)
 {
-	if (*tree)
-	{
-		if ((*tree)->left != NULL)
-			tree_free(&(*tree)->left);
-		if ((*tree)->right != NULL)
-			tree_free(&(*tree)->right);
-		if ((*tree)->value)
-			free((*tree)->value);/* code */
-		//if ((*tree)->prior)
-		//	free((*tree)->prior);/* code */
-		free((*tree));
-	}
-	(*tree) = NULL;
-}
-
-void	tree(char **array, t_ctrl *control, char **envp)
-{
-	t_ast	*ast;
-
-	ast = NULL;
-	ast = tree_create(ast, array);
-	// tree_print_rec(ast, 0);
-	tree_handle(ast, control, envp);
-	// tree_free(&ast);
+	rl_clear_history();
+	ctrl_free(control);
+	return (EXIT_SUCCESS);
 }
 
 int	main(int ac, char **av, char **env)
@@ -58,7 +66,7 @@ int	main(int ac, char **av, char **env)
 	char	**array;
 	t_ctrl	*control;
 
-	control = ctrl_create(env, ac, av);
+	control = ctrl_init(env, ac, av);
 	while (1)
 	{
 		sighandler();
@@ -73,13 +81,10 @@ int	main(int ac, char **av, char **env)
 			free(line);
 			continue ;
 		}
-		add_history(line);
 		array = parsing(line, env);
 		if (!array || !array[0])
-			continue;
+			continue ;
 		tree(array, control, env);
 	}
-	clear_history();
-	ctrl_free(control);
-	return (EXIT_SUCCESS);
+	return (clear_in_the_end(control));
 }

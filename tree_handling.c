@@ -46,7 +46,7 @@ static void write_to_tmp(t_ast *ast, int fd)
 
 
 
-t_ast_data  *create_ast_data(void)
+t_ast_data  *ast_data_init(void)
 {
     t_ast_data  *val;
 
@@ -221,7 +221,7 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 		else if (ft_strcmp(cmd_array[0], "echo") == 0)
 			echo_builtin(cmd_array, val->out);
 		else if (ft_strcmp(cmd_array[0], "cd") == 0)
-			cd_builtin(cmd_array, &(control->env), val->out);
+			cd_builtin(cmd_array, &(control->env));
 		else if (ft_strcmp(cmd_array[0], "exit") == 0)
 			exit_builtin(cmd_array, val->out);
 		else if (ft_strcmp(cmd_array[0], "pwd") == 0)
@@ -332,7 +332,35 @@ void tree_handle(t_ast *ast, t_ctrl *control, char **envp)
 		else
 			exit(status/256);
     }
-    val = create_ast_data();
+    val = ast_data_init();
     go_through_nodes(ast, control, val, envp);
 	ast_data_free(val);
+}
+
+void tree_free(t_ast **tree)
+{
+	if (*tree)
+	{
+		if ((*tree)->left != NULL)
+			tree_free(&(*tree)->left);
+		if ((*tree)->right != NULL)
+			tree_free(&(*tree)->right);
+		if ((*tree)->value)
+			free((*tree)->value);/* code */
+		//if ((*tree)->prior)
+		//	free((*tree)->prior);/* code */
+		free((*tree));
+	}
+	(*tree) = NULL;
+}
+
+void	tree(char **array, t_ctrl *control, char **envp)
+{
+	t_ast	*ast;
+
+	ast = NULL;
+	ast = tree_create(ast, array);
+	tree_print_rec(ast, 0);
+	tree_handle(ast, control, envp);
+	tree_free(&ast);
 }

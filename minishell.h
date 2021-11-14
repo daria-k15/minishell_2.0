@@ -49,13 +49,15 @@ typedef struct s_ast_data
 
 
 //-------ast.c
-t_ast*	create_node(char *value);
+t_ast*	node_create(char *value);
 void	insert_left(t_ast **ast, char *value);
 t_ast	*add_value(t_ast **ast, char *value);
 void	tree_print_rec(t_ast *ast, int level);
 t_ast*	tree_create(t_ast *ast, char **array);
 void	ast_data_free(t_ast_data *val);
 void	t_ctrl_free(t_ctrl *control);
+void	tree_free(t_ast **tree);
+void	tree(char **array, t_ctrl *control, char **envp);
 
 /*-----parsingAstArray.c-----*/
 int		check_char(char *line, char ch, int i);
@@ -95,7 +97,7 @@ void tree_free(t_ast **tree);
 void env_builtin(char **cmd_array, t_env *start, int fdout);
 void echo_builtin(char **cmd_array, int fdout);
 void pwd_builtin(char **cmd_array, int fdout);
-void cd_builtin(char **cmd_array, t_env **env_list, int fdout);
+void cd_builtin(char **cmd_array, t_env **env_list);
 void exit_builtin(char **cmd_array, int fdout);
 void export_builtin(char **cmd_array, t_env **env_list, int fdout);
 void unset_builtin(char **cmd_array, t_env **env_list, int fdout);
@@ -107,7 +109,7 @@ void print_export_list(t_env *start, int fdout);
 void ft_swap(t_env **start, t_env *a, t_env *b);
 void bubbleSort(t_env **start);
 t_env	*ft_lastnode(t_env *lst);
-int create_env_node(t_env **lst, char **d);
+int env_node_create(t_env **lst, char **d);
 t_env *env_init(char **env);
 t_env *env_cpy(t_env *head);
 void free_env(t_env *head);
@@ -133,6 +135,7 @@ int check_hero(t_ast *ast);
 int	check_redir(t_ast *ast);
 void	ft_err(char *str);
 void	free_array(char **str);
+size_t	ft_arraylen(char **str);
 
 //-----utils_2.c-----//
 int	ft_strequal(const char *str1, const char *str2);
@@ -147,7 +150,7 @@ void	sigproc(void);
 
 //------envp.c-----//
 char	*path_handler(char *cmd, char **env);
-char **env_array(t_env **env_list);
+char **env_to_array(t_env **env_list);
 void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *control, t_ast_data *val);
 
 //-----tree_handling.c-----//

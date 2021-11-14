@@ -27,39 +27,6 @@ char	*path_handler(char *cmd, char **env)
 	return (NULL);
 }
 
-char **env_array(t_env **env_list)
-{
-  int i;
-  t_env *tmp;
-  char **array;
-  char *equal;
-
-  i = 0; 
-  tmp = *env_list; 
-  while (tmp)
-  {
-    i++;
-    tmp = tmp->next;
-  }
-  array = (char **)malloc(sizeof(char *) * i);
-  if (!array)
-    return (NULL);
-  tmp = *env_list;
-  i = 0;
-  while (tmp)
-  {
-	equal = ft_strjoin(tmp->key, "="); //protect
-    array[i] = ft_strjoin(equal, tmp->value); //protect and clean what was created
-    i++;
-    tmp = tmp->next;
-    free(equal);
-  }
-  array[i] = NULL;
-  return array;
-}
-
-
-
 void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *control, t_ast_data *val)
 {
 	char	**env;
@@ -85,7 +52,7 @@ void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *con
 		//close(val->in);
 		//close(val->out);
 		ast_data_free(val);
-		env = env_array(env_list);
+		env = env_to_array(env_list);
 		path = path_handler(cmd_array[0], env);
 		if (execve(path, cmd_array, env) == -1)
 			ft_err("Error: command not executable");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsingAstArray3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heveline <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 20:19:20 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/12 20:19:24 by heveline         ###   ########.fr       */
+/*   Updated: 2021/11/14 14:36:22 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	**parsing(char *line, char **envp)
 	char	**array;
 
 	i = -1;
+	add_history(line);
 	array = (char **)malloc(sizeof(char *));
 	if (!array)
 		return (NULL);

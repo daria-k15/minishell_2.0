@@ -114,7 +114,7 @@ t_env	*ft_lastnode(t_env *lst)
 	return (lst);
 }
 
-int create_env_node(t_env **lst, char **d)
+int env_node_create(t_env **lst, char **d)
 {
   t_env *new;
 
@@ -146,7 +146,7 @@ t_env *env_init(char **env)
 	  while (a < ft_arraylen(env) && !n)
     {
       char **d = ft_split_env(env[a++], '=');
-      n = create_env_node(&start, d);
+      n = env_node_create(&start, d);
     }
 		return start;
 }
@@ -257,7 +257,7 @@ void change_envlist(char *new_env, t_env **env_list)
       free(tempvalue);
     }
     else
-      create_env_node(env_list, temp);
+      env_node_create(env_list, temp);
 }
 
 void delete_env(t_env *deleted, t_env **env_list)
@@ -271,4 +271,35 @@ void delete_env(t_env *deleted, t_env **env_list)
     free(deleted->key);
     free(deleted->value);
     free(deleted);
+}
+
+char **env_to_array(t_env **env_list)
+{
+  int i;
+  t_env *tmp;
+  char **array;
+  char *equal;
+
+  i = 0; 
+  tmp = *env_list; 
+  while (tmp)
+  {
+    i++;
+    tmp = tmp->next;
+  }
+  array = (char **)malloc(sizeof(char *) * i);
+  if (!array)
+    return (NULL);
+  tmp = *env_list;
+  i = 0;
+  while (tmp)
+  {
+	equal = ft_strjoin(tmp->key, "="); //protect
+    array[i] = ft_strjoin(equal, tmp->value); //protect and clean what was created
+    i++;
+    tmp = tmp->next;
+    free(equal);
+  }
+  array[i] = NULL;
+  return array;
 }

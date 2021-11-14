@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 16:06:20 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/13 09:38:31 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/14 13:32:04 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_ast	*tree_create(t_ast *ast, char **array)
 	while (array[i])
 	{
 		if (ast == NULL)
-			ast = create_node(array[i]);
+			ast = node_create(array[i]);
 		else
 			ast = add_value(&ast, array[i]);
 		i++;
@@ -28,7 +28,7 @@ t_ast	*tree_create(t_ast *ast, char **array)
 	return (ast);
 }
 
-t_ast	*create_node(char *value)
+t_ast	*node_create(char *value)
 {
 	t_ast	*node;
 
@@ -173,7 +173,7 @@ t_ast	*add_value(t_ast **ast, char *value)
 	int		prior;
 	int i = 0;
 
-	new = create_node(value);
+	new = node_create(value);
 	tmp = *ast;
 	prior = return_prior(value);
 	if ((*ast)->prior == 2)
@@ -191,40 +191,6 @@ t_ast	*add_value(t_ast **ast, char *value)
 		return (*ast);
 	}
 	return (firstnode(ast, new, tmp, value));
-	// else if (prior == 2 || prior == 3)
-	// {
-	// 	if (return_prior((*ast)->value) != 3 || ft_strcmp(value, "|") == 0)
-	// 	{
-	// 		new->left = *ast;
-	// 		*ast = new;
-	// 	}
-	// 	else
-	// 	{
-	// 		while (tmp->left != NULL && return_prior(tmp->left->value) == 3)
-	// 			tmp = tmp->left;
-	// 		new->left = tmp->left;
-	// 		tmp->left = new;
-	// 	return (*ast);
-	// 	}
-	// }
-	// else if ((*ast)->prior == 3)
-	// {
-	// 	// tmp3 = tmp;
-	// 	// printf("tmp3->value = %s\n", tmp->value);
-	// 	while (tmp->left != NULL && return_prior(tmp->left->value) == 3)
-	// 		tmp = tmp->left;
-	// 	if (tmp->right == NULL)
-	// 		tmp->right = new;
-	// 	else
-	// 		tmp->left = new;
-	// 	// tmp3->left = tmp;
-	// 	return (*ast);
-	// }
-
-	// 	while (tmp->left != NULL)
-	// 		tmp = tmp->left;
-	// 	tmp->left = new;
-	// 	return (*ast);
 }
 
 
