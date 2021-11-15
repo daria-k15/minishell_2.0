@@ -38,11 +38,12 @@ t_ast_data  *ast_data_init(void)
 
 char *tree_single_quote(char *line, int *i)
 {
-	int j = *i;
-	char *tmp;
-	char *tmp2;
-	char *tmp3;
+	int		j;
+	char	*tmp;
+	char	*tmp2;
+	char	*tmp3;
 
+	j = *i;
 	if (check_char(line, '\'', j + 1) == 1)
 	{
 		while (line[++(*i)])
@@ -183,9 +184,6 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 
 
         cmd_array = split_values(ast->value, envp);
-		int i = -1;
-		while (cmd_array[++i])
-			printf("%s\n", cmd_array[i]);
 		if (cmd_array[0] == NULL)
 		{
 			empty_cmd(ast, control, val, cmd_array);

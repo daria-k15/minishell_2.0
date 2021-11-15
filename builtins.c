@@ -32,14 +32,19 @@ void echo_builtin(char **cmd_array, int fdout)
 		while (cmd_array[i] && ft_strequal(cmd_array[i], "-n"))
 			i++;
 	}
-	while (cmd_array[i])
+	if (ft_strcmp(cmd_array[i], "$?") == 0)
+		ft_putnbr_fd(get_exit(), fdout);
+	else
 	{
-		ft_putstr_fd(cmd_array[i], fdout);
-		if (cmd_array[i + 1])
-			ft_putstr_fd(" ", fdout);
-    i++;
+		while (cmd_array[i])
+		{
+			ft_putstr_fd(cmd_array[i], fdout);
+			if (cmd_array[i + 1])
+				ft_putstr_fd(" ", fdout);
+		i++;
+		}
 	}
-	if (endl != 1)
+	if (endl != 1) 
 		ft_putstr_fd("\n", fdout);
 	free_array(cmd_array);
   set_exit(0);
