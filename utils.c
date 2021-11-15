@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 16:20:58 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/14 14:38:39 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/15 11:49:46 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	check_arg(char *arg)
 	return (0);
 }
 
-int	check_hero(t_ast *ast)
+int	check_heredoc(t_ast *ast)
 {
 	if (ft_strcmp(ast->value, "<<") == 0)
 		return (1);

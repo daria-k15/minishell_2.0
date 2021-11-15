@@ -6,13 +6,13 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 14:40:33 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/14 14:59:30 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/15 11:44:36 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	shlvl(t_env *env_list)
+static void	shlvl(t_env *env_list)
 {
 	t_env	*current;
 	int		shlvl;
@@ -34,7 +34,7 @@ void	shlvl(t_env *env_list)
 		change_envlist("SHLVL=1", env_list);
 }
 
-t_ctrl	*ctrl_init(char **envp, int argc, char **argv)
+static t_ctrl	*ctrl_init(char **envp, int argc, char **argv)
 {
 	t_ctrl	*control;
 	t_env	*oldpwd;
@@ -43,8 +43,8 @@ t_ctrl	*ctrl_init(char **envp, int argc, char **argv)
 	(void)argv;
 	control = (t_ctrl *)malloc(sizeof(t_ctrl));
 	control->env = env_init(envp);
-	control->fd_in = dup(STDIN_FILENO); 
-	control->fd_out = dup(STDOUT_FILENO); 
+	control->fd_in = dup(STDIN_FILENO);
+	control->fd_out = dup(STDOUT_FILENO);
 	control->pid = 1;
 	shlvl(&(control->env));
 	oldpwd = env_exists(&(control->env), "OLDPWD");
@@ -53,7 +53,7 @@ t_ctrl	*ctrl_init(char **envp, int argc, char **argv)
 	return (control);
 }
 
-int	clear_in_the_end(t_ctrl *control)
+static int	clear_in_the_end(t_ctrl *control)
 {
 	// rl_clear_history();
 	ctrl_free(control);

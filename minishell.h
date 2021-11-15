@@ -131,7 +131,7 @@ void		rl_replace_line(const char *text, int clear_undo);
 
 //-----utils.c-----//
 int	check_arg(char *arg);
-int check_hero(t_ast *ast);
+int check_heredoc(t_ast *ast);
 int	check_redir(t_ast *ast);
 void	ft_err(char *str);
 void	free_array(char **str);
