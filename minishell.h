@@ -31,10 +31,11 @@ typedef struct s_ast
 
 typedef struct s_ctrl
 {
-	t_env	*env;
+	t_env	*env_list;
 	int		pid;
 	int		fd_out;
 	int		fd_in;
+	int		print;
 }			t_ctrl;
 
 typedef struct s_ast_data

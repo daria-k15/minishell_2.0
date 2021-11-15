@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 20:19:20 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/14 14:36:22 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/15 16:54:50 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ char	**parsing(char *line, char **envp)
 		return (NULL);
 	array[0] = NULL;
 	array = pars_to_array(line, array, envp, &i);
+	free(line);
 	return (array);
 }
