@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 12:28:52 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/14 12:29:28 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/15 18:08:24 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,31 +46,42 @@ void export_builtin(char **cmd_array, t_env **env_list, int fdout)
   set_exit(0);
 }
 
-static int numeric(char *number)
+static int numeric(char *number, long long *exit_num)
 {
+  int neg;
+  int i;
+  
+  if (number[0] == '-')
+    neg == -1;
+
+  
   if (ft_atoi(number) == -1)
     return (0);
   return(1);
 }
 
-void exit_builtin(char **cmd_array, int fdout)
+void exit_builtin(char **cmd_array, t_ctrl *control, int fdout)
 {
+  long long exit_num;
+  
   if (ft_arraylen(cmd_array) == 1)
     exit(0);
-  else if (!numeric(cmd_array[1]))
+  else if (!numeric(cmd_array[1], &exit_num))
   {
     ft_putendl_fd("exit", STDERR_FILENO);
-    ft_putstr_fd("minishell: exit:", STDERR_FILENO);
+    ft_putstr_fd(control->mininame, STDERR_FILENO);
+    ft_putstr_fd("exit: ", STDERR_FILENO);
     ft_putstr_fd(cmd_array[1], STDERR_FILENO);
     ft_putendl_fd(": numeric argument required", STDERR_FILENO);
     free_array(cmd_array); //do we need it to do here?
     exit(255);
   }
   else if (ft_arraylen(cmd_array) == 2)
-    exit((int)ft_atoi(cmd_array[1])); //change to long long int and use in not_numeric
+    exit((int)exit_num); //change to long long int and use in not_numeric
   else
   {
-    	ft_putendl_fd("minishell: exit: too many arguments", STDERR_FILENO);
+      ft_putstr_fd(control->mininame, STDERR_FILENO);
+    	ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
 			set_exit(1);
 			return ;
   }
