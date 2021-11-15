@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 14:40:33 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/15 11:44:36 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/15 17:10:47 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,25 @@ static void	shlvl(t_env *env_list)
 		change_envlist("SHLVL=1", env_list);
 }
 
-static t_ctrl	*ctrl_init(char **envp, int argc, char **argv)
+static t_ctrl	*ctrl_init(char **envp, int ac, char **av)
 {
 	t_ctrl	*control;
 	t_env	*oldpwd;
 
-	(void)argc;
-	(void)argv;
+	(void)ac;
+	(void)av;
 	control = (t_ctrl *)malloc(sizeof(t_ctrl));
-	control->env = env_init(envp);
+	control->env_list = envlist_init(envp);
 	control->fd_in = dup(STDIN_FILENO);
 	control->fd_out = dup(STDOUT_FILENO);
 	control->pid = 1;
-	shlvl(&(control->env));
-	oldpwd = env_exists(&(control->env), "OLDPWD");
+	control->print = 0;
+	shlvl(&(control->env_list));
+	oldpwd = env_exists(&(control->env_list), "OLDPWD");
 	if (oldpwd)
-		delete_env(oldpwd, &(control->env));
+		delete_env(oldpwd, &(control->env_list));
+	if (ac == 2 && ft_strequal(av[1], "-print"))
+		control->print = 1;
 	return (control);
 }
 
@@ -73,10 +76,10 @@ int	main(int ac, char **av, char **env)
 		line = readline("Z&D_Shell: ");
 		if (!line)
 		{
-			ft_putendl_fd("exit", STDOUT_FILENO);
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
 		}
-		if (!line[0])
+		if (line[0] == '\0')
 		{
 			free(line);
 			continue ;

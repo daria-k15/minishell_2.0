@@ -190,15 +190,15 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 			exit(0);
 		}
 		if (ft_strcmp(cmd_array[0], "env") == 0)
-			env_builtin(cmd_array, control->env, val->out);
+			env_builtin(cmd_array, control->env_list, val->out);
 		else if (ft_strcmp(cmd_array[0], "export") == 0)
-			export_builtin(cmd_array, &(control->env), val->out);
+			export_builtin(cmd_array, &(control->env_list), val->out);
 		else if (ft_strcmp(cmd_array[0], "unset") == 0)
-			unset_builtin(cmd_array, &(control->env), val->out);
+			unset_builtin(cmd_array, &(control->env_list), val->out);
 		else if (ft_strcmp(cmd_array[0], "echo") == 0)
 			echo_builtin(cmd_array, val->out);
 		else if (ft_strcmp(cmd_array[0], "cd") == 0)
-			cd_builtin(cmd_array, &(control->env));
+			cd_builtin(cmd_array, &(control->env_list));
 		else if (ft_strcmp(cmd_array[0], "exit") == 0)
 			exit_builtin(cmd_array, val->out);
 		else if (ft_strcmp(cmd_array[0], "pwd") == 0)
@@ -206,29 +206,20 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 		else if (ft_strcmp(cmd_array[0], "") == 0)
 			return ;
 		else
-			binary_command(ast, cmd_array, &(control->env), control, val);
+			binary_command(ast, cmd_array, &(control->env_list), control, val);
 		if (!control->pid)
 			exit(get_exit());
 }
 
 void	ctrl_free(t_ctrl *control)
 {
-	free_env(control->env);
+	free_env(control->env_list);
 	free(control);
 }
 
 void	ast_data_default(t_ast_data *val)
 {
 	int	i;
-/*
-	if (val->pipe)
-	{
-		i = 0;
-		while (val->pipe[i] != -1)
-			close(val->pipe[i++]);
-		free(val->pipe);
-		val->pipe = NULL;
-	}*/
 	if (val->file)
 	{
 		i = 0;
@@ -337,7 +328,8 @@ void	tree(char **array, t_ctrl *control, char **envp)
 
 	ast = NULL;
 	ast = tree_create(ast, array);
-	// tree_print_rec(ast, 0);
 	tree_handle(ast, control, envp);
+	if (control->print == 1)
+		tree_print_rec(ast, 0);
 	tree_free(&ast);
 }
