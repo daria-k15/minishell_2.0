@@ -32,10 +32,12 @@ char	*found_k(char **envp, char *tmp)
 		while (envp[k][z] && envp[k][z] != '=')
 			z++;
 		tmp2 = ft_substr(envp[k], 0, z);
-		if (ft_strcmp(tmp, tmp2) == 0)
-			break ;
+		if (ft_strcmp(tmp, tmp2) == 0){
+			break ;}
 		k++;
 	}
+	if (z == 1)
+		return ("");
 	tmp2 = ft_substr(envp[k], z + 1, ft_strlen(envp[k]) - z);
 	return (tmp2);
 }
