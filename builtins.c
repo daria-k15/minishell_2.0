@@ -18,7 +18,7 @@ void env_builtin(char **cmd_array, t_env *start, int fdout)
     free_array(cmd_array);
     set_exit(0);
 }
-
+/*
 void echo_builtin(char **cmd_array, int fdout)
 {
 	int endl;
@@ -42,6 +42,37 @@ void echo_builtin(char **cmd_array, int fdout)
 	if (endl != 1)
 		ft_putstr_fd("\n", fdout);
 	free_array(cmd_array);
+  set_exit(0);
+}
+*/
+void echo_builtin(char **cmd_array, int fdout)
+{
+ int endl;
+ int i;
+
+ endl = 0;
+ i = 1;
+ if (cmd_array[1] && ft_strequal(cmd_array[1], "-n"))
+ {
+  endl = 1;
+  while (cmd_array[i] && ft_strequal(cmd_array[i], "-n"))
+   i++;
+ }
+ if (ft_strcmp(cmd_array[i], "$?") == 0)
+  ft_putnbr_fd(get_exit(), fdout);
+ else
+ {
+  while (cmd_array[i])
+  {
+   ft_putstr_fd(cmd_array[i], fdout);
+   if (cmd_array[i + 1])
+    ft_putstr_fd(" ", fdout);
+  i++;
+  }
+ }
+ if (endl != 1)
+  ft_putstr_fd("\n", fdout);
+ free_array(cmd_array);
   set_exit(0);
 }
 

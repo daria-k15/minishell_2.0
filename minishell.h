@@ -31,6 +31,7 @@ typedef struct s_ast
 
 typedef struct s_ctrl
 {
+	char	*mininame;
 	t_env	*env_list;
 	int		pid;
 	int		fd_out;
@@ -99,7 +100,7 @@ void env_builtin(char **cmd_array, t_env *start, int fdout);
 void echo_builtin(char **cmd_array, int fdout);
 void pwd_builtin(char **cmd_array, int fdout);
 void cd_builtin(char **cmd_array, t_env **env_list);
-void exit_builtin(char **cmd_array, int fdout);
+void exit_builtin(char **cmd_array, t_ctrl *control, int fdout);
 void export_builtin(char **cmd_array, t_env **env_list, int fdout);
 void unset_builtin(char **cmd_array, t_env **env_list, int fdout);
 

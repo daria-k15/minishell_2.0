@@ -199,7 +199,7 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 		else if (ft_strcmp(cmd_array[0], "cd") == 0)
 			cd_builtin(cmd_array, &(control->env_list));
 		else if (ft_strcmp(cmd_array[0], "exit") == 0)
-			exit_builtin(cmd_array, val->out);
+			exit_builtin(cmd_array, control, val->out);
 		else if (ft_strcmp(cmd_array[0], "pwd") == 0)
 			pwd_builtin(cmd_array, val->out);
 		else if (ft_strcmp(cmd_array[0], "") == 0)
@@ -213,6 +213,7 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 void	ctrl_free(t_ctrl *control)
 {
 	free_env(control->env_list);
+	free(control->mininame);
 	free(control);
 }
 

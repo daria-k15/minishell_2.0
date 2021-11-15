@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 14:40:33 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/15 17:10:47 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/15 18:11:20 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ static t_ctrl	*ctrl_init(char **envp, int ac, char **av)
 	(void)ac;
 	(void)av;
 	control = (t_ctrl *)malloc(sizeof(t_ctrl));
+	if (!control)
+		ft_err("Error: malloc hasn't worked");
+	control->mininame = ft_strdup("mini*hell: ");
 	control->env_list = envlist_init(envp);
 	control->fd_in = dup(STDIN_FILENO);
 	control->fd_out = dup(STDOUT_FILENO);
@@ -73,7 +76,7 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		sighandler();
-		line = readline("Z&D_Shell: ");
+		line = readline(control->mininame);
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", STDOUT_FILENO);
