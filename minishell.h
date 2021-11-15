@@ -111,7 +111,7 @@ void ft_swap(t_env **start, t_env *a, t_env *b);
 void bubbleSort(t_env **start);
 t_env	*ft_lastnode(t_env *lst);
 int env_node_create(t_env **lst, char **d);
-t_env *env_init(char **env);
+t_env *envlist_init(char **env);
 t_env *env_cpy(t_env *head);
 void free_env(t_env *head);
 int export_pair_isok(char *pair);

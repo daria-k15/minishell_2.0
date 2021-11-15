@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 14:40:33 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/15 17:04:29 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/15 17:10:47 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static t_ctrl	*ctrl_init(char **envp, int ac, char **av)
 	(void)ac;
 	(void)av;
 	control = (t_ctrl *)malloc(sizeof(t_ctrl));
-	control->env_list = env_init(envp);
+	control->env_list = envlist_init(envp);
 	control->fd_in = dup(STDIN_FILENO);
 	control->fd_out = dup(STDOUT_FILENO);
 	control->pid = 1;
@@ -51,7 +51,7 @@ static t_ctrl	*ctrl_init(char **envp, int ac, char **av)
 	oldpwd = env_exists(&(control->env_list), "OLDPWD");
 	if (oldpwd)
 		delete_env(oldpwd, &(control->env_list));
-	if (ft_strequal(av[1], "-print"))
+	if (ac == 2 && ft_strequal(av[1], "-print"))
 		control->print = 1;
 	return (control);
 }

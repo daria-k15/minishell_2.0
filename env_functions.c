@@ -134,7 +134,7 @@ int env_node_create(t_env **lst, char **d)
   return 0;
 }
   
-t_env *env_init(char **env)
+t_env *envlist_init(char **env)
 {
     t_env *start;
     int n;

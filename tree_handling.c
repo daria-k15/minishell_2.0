@@ -328,7 +328,7 @@ void	tree(char **array, t_ctrl *control, char **envp)
 	ast = NULL;
 	ast = tree_create(ast, array);
 	tree_handle(ast, control, envp);
-	if (control->print = 1)
+	if (control->print == 1)
 		tree_print_rec(ast, 0);
 	tree_free(&ast);
 }
