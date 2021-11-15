@@ -49,8 +49,6 @@ void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *con
 		if (dup2(val->in, STDIN_FILENO)< 0)
 			ft_err("error in dup");
 		tree_free(&ast);
-		//close(val->in);
-		//close(val->out);
 		ast_data_free(val);
 		env = env_to_array(env_list);
 		path = path_handler(cmd_array[0], env);

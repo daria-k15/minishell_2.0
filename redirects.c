@@ -122,7 +122,6 @@ void pipe_func(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
 
 	if (fork_pid[0] == 0)
 	{
-		printf("left ast\n");
 		control->pid = 0;
 		close(pipe_des[0]);
 		go_through_nodes(ast->left, control, val, envp);

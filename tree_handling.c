@@ -183,6 +183,9 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 
 
         cmd_array = split_values(ast->value, envp);
+		int i = -1;
+		while (cmd_array[++i])
+			printf("%s\n", cmd_array[i]);
 		if (cmd_array[0] == NULL)
 		{
 			empty_cmd(ast, control, val, cmd_array);
@@ -202,6 +205,8 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 			exit_builtin(cmd_array, val->out);
 		else if (ft_strcmp(cmd_array[0], "pwd") == 0)
 			pwd_builtin(cmd_array, val->out);
+		else if (ft_strcmp(cmd_array[0], "") == 0)
+			return ;
 		else
 			binary_command(ast, cmd_array, &(control->env), control, val);
 		if (!control->pid)
