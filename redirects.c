@@ -117,11 +117,6 @@ void pipe_func(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
 	status = pipe(pipe_des);
 	if (status < 0)
 		ft_err("pipe problem");
-
-	
-	//check condition here
-	// add_new_pipes(val, pipe_des[1]);
-	// add_new_pipes(val, pipe_des[0]);
 	val->out = pipe_des[1];
 	fork_pid[0] = fork();
 

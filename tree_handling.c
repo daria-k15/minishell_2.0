@@ -2,49 +2,25 @@
 
 void	print_her(char *str, int fd)
 {
-	int	i;
-
 	rl_redisplay();
-	i = 0;
-	while (str[i] != '\0')
-		write(fd, &str[i++], 1);
+	ft_putendl_fd(str, fd);
 	free(str);
 }
 
 static void write_to_tmp(t_ast *ast, int fd)
 {
     char *buf;
-	char *line;
-	int i;
 
-	line = malloc(sizeof(char));
-	*line = '\0';
     while (1)
     {
-        buf = readline("> ");
-        if (!buf)
-		{
-			print_her(line, fd);
-			return ;
-		}
-		if (ft_strcmp(line, ast->value) == 0)
-		{
-			i = 0;
-			while (line[i] != '\0')
-				write(fd, &line[i++], 1);
-			free(line);
-			free(buf);
-			break ;
-		}
-            
-        // ft_strequal(buf, ast->right->value);
-        // ft_putendl_fd(buf, fd);
-        // free(buf);
+        buf = readline("> ");		
+		if (ft_strequal(buf, ast->value))
+			break;
+	    if (buf)
+			print_her(buf, fd);
     }
-    
+	free(buf);    
 }
-
-
 
 t_ast_data  *ast_data_init(void)
 {
@@ -298,7 +274,7 @@ static void heredoc_func(t_ast *ast, t_ctrl *control)
     
     if (!ast)
         return ;
-    if (ft_strcmp(ast->value, "<<") == 0)
+    if (ft_strequal(ast->value, "<<"))
     {
         i = open("/tmp/.tmp_heredoc", O_CREAT | O_TRUNC | O_WRONLY,
 				S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
@@ -316,7 +292,7 @@ void tree_handle(t_ast *ast, t_ctrl *control, char **envp)
     int     status;
     t_ast_data  *val;
 
-    if (check_hero(ast))
+    if (check_heredoc(ast))
     {
         pid = fork();
         signal(SIGINT, SIG_IGN);
@@ -329,8 +305,8 @@ void tree_handle(t_ast *ast, t_ctrl *control, char **envp)
         waitpid(pid, &status, 0);
 		if (WTERMSIG(status) == SIGINT)
 			exit(1);
-		else
-			exit(status/256);
+		//else
+			//exit(status/256);
     }
     val = ast_data_init();
     go_through_nodes(ast, control, val, envp);
@@ -346,9 +322,7 @@ void tree_free(t_ast **tree)
 		if ((*tree)->right != NULL)
 			tree_free(&(*tree)->right);
 		if ((*tree)->value)
-			free((*tree)->value);/* code */
-		//if ((*tree)->prior)
-		//	free((*tree)->prior);/* code */
+			free((*tree)->value);
 		free((*tree));
 	}
 	(*tree) = NULL;
