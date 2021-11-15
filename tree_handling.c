@@ -46,16 +46,23 @@ char *tree_single_quote(char *line, int *i)
 	j = *i;
 	if (check_char(line, '\'', j + 1) == 1)
 	{
-		while (line[++(*i)])
+		while (line[++j])
 		{
-			if (line[(*i)] == '\'')
+			if (line[j] == '\'')
 				break ;
 		}
-		tmp = ft_substr(line, 0, j);
-		tmp2 = ft_substr(line, j + 1,  *i - j - 1);
+		tmp = ft_substr(line, 0, *i);
+		tmp2 = ft_substr(line, *i + 1, j - *i - 1);
 		tmp = ft_strjoin(tmp, tmp2);
-		tmp3 = ft_strdup(line + *i + 1);
+		tmp3 = ft_strdup(line + j + 1);
 		tmp3 = ft_strjoin(tmp, tmp3);
+		// tmp = ft_substr(line, 0, j);
+		// tmp2 = ft_substr(line, j + 1,  *i - j - 1);
+		// tmp = ft_strjoin(tmp, tmp2);
+		// tmp3 = ft_strdup(line + *i + 1);
+		// tmp3 = ft_strjoin(tmp, tmp3);
+		(*i)++;
+		(*i)++;
 		return (tmp3);
 	}
 	else{
@@ -184,6 +191,9 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 
 
         cmd_array = split_values(ast->value, envp);
+		// int i = -1;
+		// while (cmd_array[++i])
+		// 	printf("|%s|\n", cmd_array[i]);
 		if (cmd_array[0] == NULL)
 		{
 			empty_cmd(ast, control, val, cmd_array);

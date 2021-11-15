@@ -58,7 +58,7 @@ static t_ctrl	*ctrl_init(char **envp, int ac, char **av)
 
 static int	clear_in_the_end(t_ctrl *control)
 {
-	rl_clear_history();
+	// rl_clear_history();
 	ctrl_free(control);
 	return (EXIT_SUCCESS);
 }
