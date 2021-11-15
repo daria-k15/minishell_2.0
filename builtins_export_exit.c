@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <limits.h>
 
 
 void export_builtin(char **cmd_array, t_env **env_list, int fdout)
@@ -57,20 +58,24 @@ static int numeric(char *number, long long *exit_num)
   if (number[i] == '-')
   {
     i++;
-    neg == -1;
+    neg = -1;
   }
   while (number[i] && ft_isdigit(number[i]))
   {
-    if (*exit_num > __LONG_LONG_MAX__)
+    if (*exit_num > (unsigned long long)9223372036854775807 && neg == 1 || *exit_num > (unsigned long long)9223372036854775808 && neg == -1 ) 
       return (0);
     *exit_num = (10 * *exit_num + (number[i] - 48));
-//    printf("%llu\n", *exit_num);
     i++;
   }
   if (number[i] && !ft_isdigit(number[i]))
     return (0);
-  *exit_num = neg * (*exit_num);
-  (long long)*exit_num;
+  if (*exit_num == (unsigned long long)9223372036854775808)
+    *exit_num = (long long)(neg * (*exit_num));  
+  else
+  {
+    (long long)*exit_num;
+    *exit_num = neg * (*exit_num);
+  }
   return(1);
 }
 
@@ -91,13 +96,14 @@ void exit_builtin(char **cmd_array, t_ctrl *control, int fdout)
     free_array(cmd_array); //do we need it to do here?
     exit(255);
   }
-  else if (ft_arraylen(cmd_array) == 2)
-    exit((int)exit_num); //change to long long int and use in not_numeric
-  else
+  else if (ft_arraylen(cmd_array) > 2)
   {
       ft_putstr_fd(control->mininame, STDERR_FILENO);
     	ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
 			set_exit(1);
 			return ;
   }
+  else
+    exit((unsigned char)exit_num); //change to long long int and use in not_numeric
+  
 }
