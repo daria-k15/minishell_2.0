@@ -46,38 +46,32 @@ char *tree_single_quote(char *line, int *i)
 	j = *i;
 	if (check_char(line, '\'', j + 1) == 1)
 	{
-		while (line[++j])
+		while (line[++(*i)])
 		{
-			if (line[j] == '\'')
+			if (line[*i] == '\'')
 				break ;
 		}
-		tmp = ft_substr(line, 0, *i);
-		tmp2 = ft_substr(line, *i + 1, j - *i - 1);
+		tmp = ft_substr(line, 0, j);
+		tmp2 = ft_substr(line, j + 1, *i - j - 1);
 		tmp = ft_strjoin(tmp, tmp2);
-		tmp3 = ft_strdup(line + j + 1);
+		tmp3 = ft_strdup(line + *i + 1);
 		tmp3 = ft_strjoin(tmp, tmp3);
-		// tmp = ft_substr(line, 0, j);
-		// tmp2 = ft_substr(line, j + 1,  *i - j - 1);
-		// tmp = ft_strjoin(tmp, tmp2);
-		// tmp3 = ft_strdup(line + *i + 1);
-		// tmp3 = ft_strjoin(tmp, tmp3);
-		(*i)++;
-		(*i)++;
 		return (tmp3);
 	}
 	else{
 		write(2, "Syntax error!\n", ft_strlen("Syntax error!\n"));
-		exit(1);
+		return (NULL);
 	}
 }
 
 char *tree_double_quote(char *line, int *i, char **envp)
 {
-	int j = *i;
+	int j;
 	char *tmp;
 	char *tmp2;
 	char *tmp3;
 
+	j = *i;
 	if (check_char(line, '\"', j + 1) == 1)
 	{
 		while (line[++(*i)])
