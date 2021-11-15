@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 12:28:52 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/15 18:08:24 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/15 19:09:50 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,26 @@ static int numeric(char *number, long long *exit_num)
   int neg;
   int i;
   
-  if (number[0] == '-')
+  i = 0;
+  neg = 1;
+  (unsigned long long)*exit_num;
+  if (number[i] == '-')
+  {
+    i++;
     neg == -1;
-
-  
-  if (ft_atoi(number) == -1)
+  }
+  while (number[i] && ft_isdigit(number[i]))
+  {
+    if (*exit_num > __LONG_LONG_MAX__)
+      return (0);
+    *exit_num = (10 * *exit_num + (number[i] - 48));
+//    printf("%llu\n", *exit_num);
+    i++;
+  }
+  if (number[i] && !ft_isdigit(number[i]))
     return (0);
+  *exit_num = neg * (*exit_num);
+  (long long)*exit_num;
   return(1);
 }
 
@@ -64,6 +78,7 @@ void exit_builtin(char **cmd_array, t_ctrl *control, int fdout)
 {
   long long exit_num;
   
+  exit_num = 0;
   if (ft_arraylen(cmd_array) == 1)
     exit(0);
   else if (!numeric(cmd_array[1], &exit_num))
