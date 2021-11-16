@@ -55,6 +55,7 @@ void	free_env(t_env *head)
 	{
 		tmp = head;
 		free_env(head->next);
+		free(tmp->value);
 		free(tmp);
 		tmp = NULL;
 	}

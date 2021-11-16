@@ -85,11 +85,12 @@ char	**split_values2(char *line, char **env, char **array)
 			tmp = ft_substr(line, 0, i);
 			line = tree_skip_space(line, &i);
 			array = add_val(array, tmp);
+			free(tmp);
 			i = -1;
 		}
 	}
 	array = add_val(array, line);
-	// free_array(env);
+	free(line);
 	return (array);
 }
 

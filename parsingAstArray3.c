@@ -47,6 +47,7 @@ char	**pars_to_array(char *line, char **array, char **envp, int *i)
 	}
 	line = parsing2(line, envp);
 	array = add_val(array, line);
+	free(line);
 	return (array);
 }
 

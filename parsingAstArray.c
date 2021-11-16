@@ -28,15 +28,17 @@ char	*skip_space(char *line, int *i)
 	int		j;
 	char	*tmp;
 	char	*tmp1;
+	char	*tmp2;
 
 	j = *i;
 	while (line[j] == ' ')
 		j++;
 	tmp = ft_substr(line, 0, *i + 1);
 	tmp1 = ft_substr(line, j, ft_strlen(line));
-	tmp1 = ft_strjoin(tmp, tmp1);
+	tmp2 = ft_strjoin(tmp, tmp1);
 	free(tmp);
-	return (tmp1);
+	free(tmp1);
+	return (tmp2);
 }
 
 char	*single_quote_parse(char *line, int *i)

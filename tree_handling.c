@@ -26,7 +26,7 @@ char	**cmd_commands2(t_ast *ast, t_ctrl *control, t_ast_data *val)
 
 	env = env_to_array(&(control->env_list));
 	cmd_array = split_values(ast->value, env);
-	free(env);
+	free_array(env);
 	if (cmd_array[0] == NULL)
 	{
 		free(cmd_array);
