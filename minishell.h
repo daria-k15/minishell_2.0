@@ -47,9 +47,6 @@ typedef struct s_ast_data
 	int in;
 }		t_ast_data;
 
-
-
-
 /*-------ast.c-----*/
 t_ast	*tree_create(t_ast *ast, char **array);
 t_ast	*node_create(char *value);

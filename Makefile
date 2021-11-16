@@ -1,8 +1,8 @@
 NAME = minishell
 
 CC = gcc 
-FLAGS = -Wall -Wextra  -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include 
-
+FLAGS = -Wall -Wextra -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include 
+# -L/Users/$(USER)/.brew/opt/readline/lib
 LIBFT = $(LIBFT_DIRECTORY)libft.a
 LIBFT_DIRECTORY = ./libft/
 LIBFT_HEADERS = $(LIBFT_DIRECTORY)include/
