@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_handling.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: heveline <heveline@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 21:47:09 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/16 21:59:31 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/17 02:03:24 by heveline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	clean_node(t_ast *ast, t_ctrl *data, t_ast_data *val)
 {
 	ast_data_free(val);
 	ctrl_free(data);
-	tree_free(&ast);
+	// tree_free(&ast);
 }
 
 char	**cmd_commands2(t_ast *ast, t_ctrl *control, t_ast_data *val)

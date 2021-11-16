@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_values.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: heveline <heveline@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 21:47:09 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/16 21:55:42 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/17 02:06:01 by heveline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	**split_values2(char *line, char **env, char **array)
 		}
 	}
 	array = add_val(array, line);
-	free(line);
+	// free(line);
 	return (array);
 }
 

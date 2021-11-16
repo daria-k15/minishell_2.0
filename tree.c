@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: heveline <heveline@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 21:58:44 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/16 21:59:01 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/17 02:10:20 by heveline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,16 @@ void	tree_handle(t_ast *ast, t_ctrl *control, char **envp)
 
 void	tree_free(t_ast **tree)
 {
-	if (*tree)
-	{
+	// if (*tree)
+	// {
 		if ((*tree)->left != NULL)
 			tree_free(&(*tree)->left);
 		if ((*tree)->right != NULL)
 			tree_free(&(*tree)->right);
-		if ((*tree)->value)
-			free((*tree)->value);
+		free((*tree)->value);
+		// if ((*tree)->value)
 		free((*tree));
-	}
+	// }
 	(*tree) = NULL;
 }
 

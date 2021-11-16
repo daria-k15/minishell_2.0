@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_functions_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: heveline <heveline@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 20:58:13 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/16 21:01:13 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/17 02:11:02 by heveline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	free_env(t_env *head)
 		tmp = head;
 		free_env(head->next);
 		free(tmp->value);
+		free(tmp->key);
 		free(tmp);
 		tmp = NULL;
 	}

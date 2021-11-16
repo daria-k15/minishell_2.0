@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsingAstArray3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: heveline <heveline@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 20:19:20 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/15 16:54:50 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/17 02:21:06 by heveline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	**pars_to_array(char *line, char **array, char **envp, int *i)
 	}
 	line = parsing2(line, envp);
 	array = add_val(array, line);
-	free(line);
+	// free(line);
 	return (array);
 }
 
@@ -64,5 +64,7 @@ char	**parsing(char *line, char **envp)
 	array[0] = NULL;
 	array = pars_to_array(line, array, envp, &i);
 	free(line);
+	line = NULL;
+	// printf("%s\n", line);
 	return (array);
 }
