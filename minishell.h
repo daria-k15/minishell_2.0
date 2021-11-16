@@ -162,6 +162,15 @@ size_t	ft_arraylen(char **str);
 void	heredoc_func(t_ast *ast, t_ctrl *control);
 void create_files(t_ast_data *val, int fd);
 
+//------tree_handling.c------//
+void clean_node(t_ast *ast, t_ctrl *data, t_ast_data *val);
+void empty_cmd(t_ast *ast, t_ctrl *data, t_ast_data *val, char **array);
+void cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp);
+void ctrl_free(t_ctrl *control);
+void ast_data_default(t_ast_data *val);
+
+
+
 //------split_values.c-----//
 t_ast_data	*ast_data_init(void);
 char	*tree_single_quote(char *line, int *i);
