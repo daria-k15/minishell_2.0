@@ -15,7 +15,8 @@ SOURCES =	main.c\
 			printAst.c\
 			builtins.c\
 			builtins_cd.c\
-			builtins_export_exit.c\
+			builtins_exit.c\
+			builtins_export.c\
 			dollar_parse.c\
 			env_functions.c\
 			tree_handling.c\

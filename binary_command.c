@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   binary_command.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/16 17:35:45 by qcesar            #+#    #+#             */
+/*   Updated: 2021/11/16 18:07:09 by qcesar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*path_handler(char *cmd, char **env)
@@ -27,34 +39,42 @@ char	*path_handler(char *cmd, char **env)
 	return (NULL);
 }
 
-void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *control, t_ast_data *val)
+static void	execute_cmd(t_ast *ast, char **array, t_ctrl *ctrl, t_ast_data *val)
 {
 	char	**env;
 	char	*path;
+
+	if (dup2(val->out, STDOUT_FILENO) < 0)
+		ft_err("error in dup");
+	if (dup2(val->in, STDIN_FILENO) < 0)
+		ft_err("error in dup");
+	tree_free(&ast);
+	ast_data_free(val);
+	env = env_to_array(&(ctrl->env_list));
+	path = path_handler(array[0], env);
+	if (execve(path, array, env) == -1)
+	{
+		free(path);
+		free_array(env);
+		ft_err("Error: command not executable");
+	}
+}
+
+void	binary_command(t_ast *ast, char **array, t_ctrl *ctrl, t_ast_data *val)
+{
 	pid_t	pid;
-	int i;
+	int		i;
 
 	pid = 1;
-	if (control->pid != 0)
+	if (ctrl->pid != 0)
 		pid = fork();
 	if (pid < 0)
-		{
-			ft_putendl_fd("Fork error", STDERR_FILENO);
-			set_exit(228);
-		}
-	if (pid == 0 || control->pid == 0)
 	{
-		if (dup2(val->out, STDOUT_FILENO) < 0)
-			ft_err("error in dup");
-		if (dup2(val->in, STDIN_FILENO)< 0)
-			ft_err("error in dup");
-		tree_free(&ast);
-		ast_data_free(val);
-		env = env_to_array(env_list);
-		path = path_handler(cmd_array[0], env);
-		if (execve(path, cmd_array, env) == -1)
-			ft_err("Error: command not executable");
+		ft_putendl_fd("Fork error", STDERR_FILENO);
+		set_exit(228);
 	}
+	if (pid == 0 || ctrl->pid == 0)
+		execute_cmd(ast, array, ctrl, val);
 	waitpid(pid, &i, 0);
-	set_exit(i/256);
+	set_exit(i / 256);
 }

@@ -159,7 +159,7 @@ void	handlerquit(int signum);
 //------envp.c-----//
 char	*path_handler(char *cmd, char **env);
 char **env_to_array(t_env **env_list);
-void  binary_command(t_ast *ast, char **cmd_array, t_env **env_list, t_ctrl *control, t_ast_data *val);
+void  binary_command(t_ast *ast, char **cmd_array, t_ctrl *control, t_ast_data *val);
 
 //-----tree_handling.c-----//
 void tree_handle(t_ast *ast, t_ctrl *control, char **envp);
