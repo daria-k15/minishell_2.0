@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heveline <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 16:19:37 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/13 16:20:32 by heveline         ###   ########.fr       */
+/*   Updated: 2021/11/16 21:28:00 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	handlerint(int signal)
 	rl_on_new_line();
 	rl_redisplay();
 	write(1, "  \b\b\n", 5);
-	// rl_on_new_line();
-	// rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_replace_line("", 0);
 	rl_redisplay();
 	set_exit(1);
 }

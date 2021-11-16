@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirects.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/16 21:30:08 by qcesar            #+#    #+#             */
+/*   Updated: 2021/11/16 21:44:00 by qcesar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	left_redir(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 {
-	int i;
+	int	i;
 
-    if (ft_strequal(ast->value, "<"))
+	if (ft_strequal(ast->value, "<"))
 		i = open((char *)ast->right->value, O_RDONLY,
-			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
+				S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
 	else if (ft_strequal(ast->value, "<<"))
 		i = open("/tmp/.tmp_heredoc", O_RDONLY,
-			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
+				S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
 	if (i == -1)
 	{
 		ft_putstr_fd(control->mininame, STDERR_FILENO);
@@ -25,20 +37,20 @@ void	left_redir(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 	}
 }
 
-void    right_redir(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
+void	right_redir(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 {
-    int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	if (!ft_strcmp((char *)ast->value, ">>"))
 	{
 		tmp = parsing2((char *)ast->right->value, envp);
 		i = open(tmp, O_CREAT | O_APPEND | O_WRONLY,
-			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
+				S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
 	}
 	else
-    	i = open((char *)ast->right->value, O_CREAT | O_TRUNC | O_WRONLY,
-			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
+		i = open((char *)ast->right->value, O_CREAT | O_TRUNC | O_WRONLY,
+				S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
 	if (i == -1)
 	{
 		ft_putstr_fd(control->mininame, STDERR_FILENO);
@@ -81,18 +93,28 @@ void	add_new_pipes(t_ast_data *td, int fd)
 	td->pipe = new;
 }
 
-void pipe_func(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
+void	pip_func2(t_ctrl *control, int fork_pid[], int pipe_des[], int *status)
+{	
+	close(pipe_des[0]);
+	close(pipe_des[1]);
+	waitpid(fork_pid[0], 0, 0);
+	waitpid(fork_pid[1], status, 0);
+	set_exit(*status / 256);
+	if (control->pid == 0)
+		exit(get_exit());
+}
+
+void	pipe_func(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 {
-	int fork_pid[2];
-	int pipe_des[2];
-	int status;
+	int	fork_pid[2];
+	int	pipe_des[2];
+	int	status;
 
 	status = pipe(pipe_des);
 	if (status < 0)
 		ft_err("pipe problem");
 	val->out = pipe_des[1];
 	fork_pid[0] = fork();
-
 	if (fork_pid[0] == 0)
 	{
 		control->pid = 0;
@@ -108,11 +130,5 @@ void pipe_func(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
 		close(pipe_des[1]);
 		go_through_nodes(ast->right, control, val, envp);
 	}
-	close(pipe_des[0]);
-	close(pipe_des[1]);
-	waitpid(fork_pid[0], 0, 0);
-	waitpid(fork_pid[1], &status, 0);
-	set_exit(status/256);
-	if (control->pid == 0)
-		exit(get_exit());
+	pip_func2(control, fork_pid, pipe_des, &status);
 }

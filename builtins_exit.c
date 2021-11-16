@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 16:31:12 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/16 16:58:52 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/16 20:54:06 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	exit_builtin(char **cmd_array, t_ctrl *control, int fdout)
 		ft_putstr_fd("exit: ", STDERR_FILENO);
 		ft_putstr_fd(cmd_array[1], STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		free_array(cmd_array); //do we need it to do here?
+		free_array(cmd_array); /*do we need it to do here?*/
 		exit(255);
 	}
 	else if (ft_arraylen(cmd_array) > 2)

@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 14:40:33 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/15 18:11:20 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/16 21:29:00 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static t_ctrl	*ctrl_init(char **envp, int ac, char **av)
 
 static int	clear_in_the_end(t_ctrl *control)
 {
-	// rl_clear_history();
+	rl_clear_history();
 	ctrl_free(control);
 	return (EXIT_SUCCESS);
 }

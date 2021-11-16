@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsingAstArray.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: heveline <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 16:14:10 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/12 16:14:12 by heveline         ###   ########.fr       */
+/*   Updated: 2021/11/16 21:29:37 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*double_quote_parse(char *line, int *i)
 			break ;
 	}
 	tmp = ft_substr(line, 0, j);
-	tmp2 = ft_substr(line, j + 1,  *i -j - 1);
+	tmp2 = ft_substr(line, j + 1, *i - j - 1);
 	tmp3 = ft_strdup(line + *i + 1);
 	tmp = ft_strjoin(tmp, tmp2);
 	tmp = ft_strjoin(tmp, tmp3);

@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 11:09:16 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/16 17:19:50 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/16 20:44:05 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,9 @@ void	change_dir(char *path, t_env **env_list, char *cwd)
 		change_node("PWD", path, env_list);
 	}
 }
+/* exit in case of err? */
 
-void	cd_to_home(char *cwd, t_env **env_list) //exit in case of err?
+void	cd_to_home(char *cwd, t_env **env_list)
 {
 	t_env	*home;
 

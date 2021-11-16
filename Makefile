@@ -13,12 +13,16 @@ SOURCES =	main.c\
 			ast.c\
 			ast_2.c\
 			printAst.c\
+			binary_command.c \
 			builtins.c\
 			builtins_cd.c\
 			builtins_exit.c\
 			builtins_export.c\
 			dollar_parse.c\
 			env_functions.c\
+			env_functions_2.c\
+			env_functions_3.c\
+			love_norm.c\
 			tree_handling.c\
 			parsingAstArray.c\
 			parsingAstArray2.c\
@@ -27,7 +31,6 @@ SOURCES =	main.c\
 			utils_2.c\
 			signals.c \
 			signals_2.c\
-			binary_command.c \
 			exit_status.c \
 			redirects.c
 

@@ -6,16 +6,17 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 18:39:39 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/16 18:39:40 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/16 20:52:33 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void env_builtin(char **cmd_array, t_env *start, int fdout)
+void	env_builtin(char **cmd_array, t_env *start, int fdout)
 {
-	t_env *temp = start;
+	t_env	*temp;
 
+	temp = start;
 	while (temp != NULL)
 	{
 		if (temp->value)
@@ -31,34 +32,18 @@ void env_builtin(char **cmd_array, t_env *start, int fdout)
 	set_exit(0);
 }
 
-void echo_builtin(char **cmd_array, int fdout)
+void	echo_builtin_2(char **cmd_array, int fdout, int *i, int endl)
 {
-	int endl;
-	int i;
-
-	endl = 0;
-	i = 1;
-	if (ft_arraylen(cmd_array) == 1)
-	{
-		ft_putendl_fd("", fdout);
-		return;
-	}
-	if (cmd_array[1] && ft_strequal(cmd_array[1], "-n"))
-	{
-		endl = 1;
-		while (cmd_array[i] && ft_strequal(cmd_array[i], "-n"))
-			i++;
-	}
-	if (ft_strcmp(cmd_array[i], "$?") == 0)
+	if (ft_strcmp(cmd_array[*i], "$?") == 0)
 		ft_putnbr_fd(get_exit(), fdout);
 	else
 	{
-		while (cmd_array[i])
+		while (cmd_array[*i])
 		{
-			ft_putstr_fd(cmd_array[i], fdout);
-			if (cmd_array[i + 1])
+			ft_putstr_fd(cmd_array[*i], fdout);
+			if (cmd_array[*i + 1])
 				ft_putstr_fd(" ", fdout);
-			i++;
+			(*i)++;
 		}
 	}
 	if (endl != 1)
@@ -67,9 +52,30 @@ void echo_builtin(char **cmd_array, int fdout)
 	set_exit(0);
 }
 
-void pwd_builtin(char **cmd_array, int fdout)
+void	echo_builtin(char **cmd_array, int fdout)
 {
-	char *pwd;
+	int	endl;
+	int	i;
+
+	endl = 0;
+	i = 1;
+	if (ft_arraylen(cmd_array) == 1)
+	{
+		ft_putendl_fd("", fdout);
+		return ;
+	}
+	if (cmd_array[1] && ft_strequal(cmd_array[1], "-n"))
+	{
+		endl = 1;
+		while (cmd_array[i] && ft_strequal(cmd_array[i], "-n"))
+			i++;
+	}
+	echo_builtin_2(cmd_array, fdout, &i, endl);
+}
+
+void	pwd_builtin(char **cmd_array, int fdout)
+{
+	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
 	ft_putendl_fd(pwd, fdout);
@@ -78,10 +84,10 @@ void pwd_builtin(char **cmd_array, int fdout)
 	set_exit(0);
 }
 
-void unset_builtin(char **cmd_array, t_env **env_list, int fdout)
+void	unset_builtin(char **cmd_array, t_env **env_list, int fdout)
 {
-	t_env *deleted;
-	int i;
+	t_env	*deleted;
+	int		i;
 
 	i = 1;
 	while (cmd_array[i])
@@ -97,10 +103,10 @@ void unset_builtin(char **cmd_array, t_env **env_list, int fdout)
 			ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
 			ft_putstr_fd(cmd_array[i], STDERR_FILENO);
 			ft_putendl_fd("\': not a valid identifier", STDERR_FILENO);
-			set_exit(1); // ?val - сделать поле специальное со статусом?
+			set_exit(1);
 		}
 		i++;
 	}
 	free_array(cmd_array);
-	set_exit(0); // ?val - сделать поле специальное со статусом?
+	set_exit(0);
 }

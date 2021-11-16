@@ -52,16 +52,72 @@ typedef struct s_ast_data
 
 /*-------ast.c-----*/
 t_ast	*tree_create(t_ast *ast, char **array);
-void	insert_left(t_ast **ast, char *value);
+t_ast	*node_create(char *value);
 t_ast	*firstnode(t_ast **ast, t_ast *new, t_ast *tmp, char *value);
 t_ast	*add_value(t_ast **ast, char *value);
 
 /*-----ast_2.c-----*/
-int	return_prior(char *value);
+int		return_prior(char *value);
 t_ast	*addtoend(t_ast **ast, t_ast *new, t_ast *tmp);
 t_ast	*addnode(t_ast **ast, t_ast *new, t_ast *tmp, char *value);
 t_ast	*fnode(t_ast **ast, t_ast *new, t_ast *tmp, char *value);
 
+/*---binary_command.c---*/
+char	*path_handler(char *cmd, char **env);
+static void	execute_cmd(t_ast *ast, char **array, t_ctrl *ctrl, t_ast_data *val);
+void	binary_command(t_ast *ast, char **array, t_ctrl *ctrl, t_ast_data *val);
+
+/*---builtins_cd.c-----*/
+void	change_node(char *env_name, char *wd, t_env **env_list);
+void	change_dir(char *path, t_env **env_list, char *cwd);
+void	cd_to_home(char *cwd, t_env **env_list);
+void	cd_builtin(char **cmd_array, t_env **env_list);
+
+/*----builtins_exit.c-----*/
+static int	numeric_condition(unsigned long long *exit_num, int neg);
+static int	numeric(char *number, unsigned long long *exit_num);
+void	exit_builtin(char **cmd_array, t_ctrl *control, int fdout);
+
+/*-----builtins_export-----*/
+void	bubble_sort(t_env **start);
+static void	export_add_env(char **cmd_array, t_env **env_list);
+void	export_builtin(char **cmd_array, t_env **env_list, int fdout);
+
+/*-----builtins----*/
+void	env_builtin(char **cmd_array, t_env *start, int fdout);
+void	echo_builtin_2(char **cmd_array, int fdout, int *i, int endl);
+void	echo_builtin(char **cmd_array, int fdout);
+void	pwd_builtin(char **cmd_array, int fdout);
+void	unset_builtin(char **cmd_array, t_env **env_list, int fdout);
+
+/*-----env_functions.c-----*/
+char	**ft_split_env(char const *s, char c);
+void	print_export_list(t_env *start, int fdout);
+void	ft_swap(t_env **start, t_env *a, t_env *b);
+t_env	*ft_lastnode(t_env *lst);
+int	env_node_create(t_env **lst, char **d);
+
+/*-----env_functions_2.c-----*/
+t_env	*envlist_init(char **env);
+t_env	*env_cpy(t_env *head);
+void	free_env(t_env *head);
+int	unset_arg_isok(char *arg);
+int	export_pair_isok(char *pair);
+
+/*-----env_functions_3.c-----*/
+t_env	*env_exists(t_env **env_list, char *key);
+void	change_envlist_2(t_env **env_list, char **temp, int tobejoined);
+void	change_envlist(char *new_env, t_env **env_list);
+void	delete_env(t_env *deleted, t_env **env_list);
+char	**env_to_array(t_env **env_list);
+
+/*------love_norm.c------*/
+char	**love_norme(char **array, int i);
+
+//----exit_status.c-----//
+static int  new_exit(const int *id);
+int get_exit(void);
+void    set_exit(int id);
 
 /*-----parsingAstArray.c-----*/
 t_ast	*node_create(char *value);
@@ -86,6 +142,35 @@ char	**parsing(char *line, char **envp);
 //------dollar_parse.c------//
 char	*parse_dollar(char *line, int *i, char **envp);
 int		if_key(char c);
+char	*found_k(char **envp, char *tmp);
+
+//-----utils.c-----//
+int	check_arg(char *arg);
+int check_heredoc(t_ast *ast);
+int	check_redir(t_ast *ast);
+void	ft_err(char *str);
+
+
+//-----utils_2.c-----//
+int	ft_strequal(const char *str1, const char *str2);
+int	check_redir_pipe(char *line);
+void	free_array(char **str);
+size_t	ft_arraylen(char **str);
+
+
+//------redirects_heredoc.c----//
+void	heredoc_func(t_ast *ast, t_ctrl *control);
+void create_files(t_ast_data *val, int fd);
+
+//------split_values.c-----//
+t_ast_data	*ast_data_init(void);
+char	*tree_single_quote(char *line, int *i);
+char	*tree_double_quote(char *line, int *i, char **envp);
+char	*tree_skip_space(char *line, int *i);
+char	**split_values(char *line, char **env);
+
+
+
 
 
 t_ast*	insert_val(t_ast **ast, char *value);
@@ -133,17 +218,6 @@ void		rl_replace_line(const char *text, int clear_undo);
 
 /* ---- executor ------ */
 
-//-----utils.c-----//
-int	check_arg(char *arg);
-int check_heredoc(t_ast *ast);
-int	check_redir(t_ast *ast);
-void	ft_err(char *str);
-void	free_array(char **str);
-size_t	ft_arraylen(char **str);
-
-//-----utils_2.c-----//
-int	ft_strequal(const char *str1, const char *str2);
-int	check_redir_pipe(char *line);
 
 /*-----signals.c-----*/
 void	handlerint(int signal);
@@ -171,10 +245,7 @@ void ctrl_free(t_ctrl *control);
 void	ast_data_default(t_ast_data *val);
 void    create_files(t_ast_data *val, int fd);
 void	ast_data_free(t_ast_data *val);
-//----set_exit.c-----//
-static int  new_exit(const int *id);
-int get_exit(void);
-void    set_exit(int id);
+
 
 
 #endif
