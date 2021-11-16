@@ -23,6 +23,7 @@ SOURCES =	main.c\
 			env_functions_2.c\
 			env_functions_3.c\
 			love_norm.c\
+			tree.c\
 			tree_handling.c\
 			parsingAstArray.c\
 			parsingAstArray2.c\
@@ -32,7 +33,9 @@ SOURCES =	main.c\
 			signals.c \
 			signals_2.c\
 			exit_status.c \
-			redirects.c
+			split_values.c\
+			redirects.c\
+			redirects_heredoc.c\
 
 
 OBJECTS_DIRECTORY = objects/
