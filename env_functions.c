@@ -75,35 +75,6 @@ void ft_swap(t_env **start, t_env *a, t_env *b)
     }
 }
 
-void bubbleSort(t_env **start)
-{
-    int swapped;
-    t_env *ptr1;
-    t_env *lptr;
-  
-    if ((*start) == NULL)
-        return;
-    lptr = NULL;
-    swapped = 1;
-    
-    while (swapped)
-    {
-        swapped = 0;
-        ptr1 = (*start);
-        
-        while (ptr1->next != lptr) 
-        {
-          if (ft_strncmp(ptr1->key, ptr1->next->key, ft_strlen(ptr1->key)) > 0)
-          {           
-               ft_swap(&(*start), ptr1, ptr1->next);
-               swapped = 1;
-          }
-          else
-            ptr1 = ptr1->next;
-        }
-        lptr = ptr1;
-    }
-}
 
 t_env	*ft_lastnode(t_env *lst)
 {

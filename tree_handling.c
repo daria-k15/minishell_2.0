@@ -210,7 +210,7 @@ void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 		else if (ft_strcmp(cmd_array[0], "") == 0)
 			return ;
 		else
-			binary_command(ast, cmd_array, &(control->env_list), control, val);
+			binary_command(ast, cmd_array, control, val);
 		if (!control->pid)
 			exit(get_exit());
 }

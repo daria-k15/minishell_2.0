@@ -6,7 +6,7 @@
 /*   By: qcesar <qcesar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 11:09:16 by qcesar            #+#    #+#             */
-/*   Updated: 2021/11/14 13:25:36 by qcesar           ###   ########.fr       */
+/*   Updated: 2021/11/16 17:19:50 by qcesar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,37 +33,37 @@ void	change_node(char *env_name, char *wd, t_env **env_list)
 	}
 }
 
-void change_dir(char *path, t_env **env_list, char *cwd)
+void	change_dir(char *path, t_env **env_list, char *cwd)
 {
 	if (chdir(path))
 		ft_putendl_fd("Error: chdir fails with the given path", 2);
-    else
-      {
+	else
+	{
 		change_node("OLDPWD", cwd, env_list);
 		change_node("PWD", path, env_list);
-      }
+	}
 }
 
 void	cd_to_home(char *cwd, t_env **env_list) //exit in case of err?
 {
 	t_env	*home;
-    
-    home = env_exists(env_list, "HOME");
-    if (home)
-      change_dir(home->value, env_list, cwd);
-    else
-      ft_putendl_fd("HOME not set", 2);
+
+	home = env_exists(env_list, "HOME");
+	if (home)
+		change_dir(home->value, env_list, cwd);
+	else
+		ft_putendl_fd("HOME not set", 2);
 }
 
-void cd_builtin(char **cmd_array, t_env **env_list)
+void	cd_builtin(char **cmd_array, t_env **env_list)
 {
-  char *cwd;
+	char	*cwd;
 
-  cwd = getcwd(NULL, 0);
-  if (!cmd_array[1])
-    cd_to_home(cwd, env_list);
-  else
-    change_dir(cmd_array[1], env_list, cwd);
-  free_array(cmd_array);
-  free(cwd);
+	cwd = getcwd(NULL, 0);
+	if (!cmd_array[1])
+		cd_to_home(cwd, env_list);
+	else
+		change_dir(cmd_array[1], env_list, cwd);
+	free_array(cmd_array);
+	free(cwd);
 }
