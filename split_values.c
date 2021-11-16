@@ -55,44 +55,9 @@ char	*tree_single_quote(char *line, int *i)
 	}
 }
 
-char	*tree_double_quote(char *line, int *i, char **envp)
-{
-	int		j;
-	char	*tmp;
-	char	*tmp2;
-	char	*tmp3;
-
-	j = *i;
-	if (check_char(line, '\"', j + 1) == 1)
-	{
-		while (line[++(*i)])
-		{
-			if (line[*i] == '\\' && (line[*i + 1] == '\"'
-					|| line[*i + 1] == '$' || line[*i + 1] == '\\'))
-				line = slash_parse(line, i);
-			if (line[*i] == '$')
-				line = parse_dollar(line, i, envp);
-			if (line[*i] == '\"')
-				break ;
-		}
-		tmp = ft_substr(line, 0, j);
-		tmp2 = ft_substr(line, j + 1, *i - j - 1);
-		tmp3 = ft_strdup(line + *i + 1);
-		tmp = ft_strjoin(tmp, tmp2);
-		tmp = ft_strjoin(tmp, tmp3);
-		(*i)--;
-		return (tmp);
-	}
-	else
-	{
-		write(2, "Syntax error!\n", ft_strlen("Syntax error!\n"));
-		exit(1);
-	}
-}
-
 char	*tree_skip_space(char *line, int *i)
 {
-	int j;
+	int	j;
 
 	j = *i;
 	while (line[j] == ' ')
@@ -101,17 +66,12 @@ char	*tree_skip_space(char *line, int *i)
 	return (line);
 }
 
-char	**split_values(char *line, char **env)
+char	**split_values2(char *line, char **env, char **array)
 {
-	char	**array;
-	int		i;
 	char	*tmp;
+	int		i;
 
 	i = -1;
-	array = (char **)malloc(sizeof(char *));
-	if (!array)
-		return (0);
-	array[0] = NULL;
 	while (line[++i])
 	{
 		if (line[i] == '\'')
@@ -129,5 +89,20 @@ char	**split_values(char *line, char **env)
 		}
 	}
 	array = add_val(array, line);
+	// free_array(env);
 	return (array);
+}
+
+char	**split_values(char *line, char **env)
+{
+	char	**array;
+	int		i;
+	char	*tmp;
+
+	i = -1;
+	array = (char **)malloc(sizeof(char *));
+	if (!array)
+		return (0);
+	array[0] = NULL;
+	return (split_values2(line, env, array));
 }

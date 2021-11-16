@@ -34,6 +34,7 @@ SOURCES =	main.c\
 			signals_2.c\
 			exit_status.c \
 			split_values.c\
+			split_values2.c\
 			redirects.c\
 			redirects_heredoc.c\
 

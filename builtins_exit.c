@@ -59,7 +59,7 @@ void	exit_builtin(char **cmd_array, t_ctrl *control, int fdout)
 		ft_putstr_fd("exit: ", STDERR_FILENO);
 		ft_putstr_fd(cmd_array[1], STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		free_array(cmd_array); /*do we need it to do here?*/
+		free_array(cmd_array);
 		exit(255);
 	}
 	else if (ft_arraylen(cmd_array) > 2)

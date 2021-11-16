@@ -12,31 +12,35 @@
 
 #include "minishell.h"
 
-void clean_node(t_ast *ast, t_ctrl *data, t_ast_data *val)
+void	clean_node(t_ast *ast, t_ctrl *data, t_ast_data *val)
 {
 	ast_data_free(val);
 	ctrl_free(data);
 	tree_free(&ast);
 }
 
-void empty_cmd(t_ast *ast, t_ctrl *data, t_ast_data *val, char **array)
+char	**cmd_commands2(t_ast *ast, t_ctrl *control, t_ast_data *val)
 {
-	free(array);
-	clean_node(ast, data, val);
-}
-
-void cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
-{
-	char **cmd_array;
-	char **env;
+	char	**cmd_array;
+	char	**env;
 
 	env = env_to_array(&(control->env_list));
 	cmd_array = split_values(ast->value, env);
+	free(env);
 	if (cmd_array[0] == NULL)
 	{
-		empty_cmd(ast, control, val, cmd_array);
+		free(cmd_array);
+		clean_node(ast, control, val);
 		exit(0);
 	}
+	return (cmd_array);
+}
+
+void	cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
+{
+	char	**cmd_array;
+
+	cmd_array = cmd_commands2(ast, control, val);
 	if (ft_strcmp(cmd_array[0], "env") == 0)
 		env_builtin(cmd_array, control->env_list, val->out);
 	else if (ft_strcmp(cmd_array[0], "export") == 0)
@@ -52,23 +56,24 @@ void cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 	else if (ft_strcmp(cmd_array[0], "pwd") == 0)
 		pwd_builtin(cmd_array, val->out);
 	else if (ft_strcmp(cmd_array[0], "") == 0)
-		return;
+		return ;
 	else
 		binary_command(ast, cmd_array, control, val);
 	if (!control->pid)
 		exit(get_exit());
 }
 
-void ctrl_free(t_ctrl *control)
+void	ctrl_free(t_ctrl *control)
 {
 	free_env(control->env_list);
 	free(control->mininame);
 	free(control);
 }
 
-void ast_data_default(t_ast_data *val)
+void	ast_data_default(t_ast_data *val)
 {
-	int i;
+	int	i;
+
 	if (val->file)
 	{
 		i = 0;

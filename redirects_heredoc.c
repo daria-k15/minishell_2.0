@@ -27,7 +27,7 @@ static void	write_to_tmp(t_ast *ast, int fd)
 	{
 		buf = readline("> ");
 		if (ft_strequal(buf, ast->value))
-			break;
+			break ;
 		if (buf)
 			print_her(buf, fd);
 	}
@@ -39,11 +39,11 @@ void	heredoc_func(t_ast *ast, t_ctrl *control)
 	int	i;
 
 	if (!ast)
-		return;
+		return ;
 	if (ft_strequal(ast->value, "<<"))
 	{
 		i = open("/tmp/.tmp_heredoc", O_CREAT | O_TRUNC | O_WRONLY,
-				 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
+				S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
 		write_to_tmp(ast->right, i);
 		close(i);
 	}
@@ -51,10 +51,10 @@ void	heredoc_func(t_ast *ast, t_ctrl *control)
 	heredoc_func(ast->right, control);
 }
 
-void create_files(t_ast_data *val, int fd)
+void	create_files(t_ast_data *val, int fd)
 {
-	int *tmp;
-	int i;
+	int	*tmp;
+	int	i;
 
 	i = 0;
 	if (val->file)
