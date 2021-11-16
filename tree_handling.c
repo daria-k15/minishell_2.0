@@ -182,12 +182,10 @@ void empty_cmd(t_ast *ast, t_ctrl *data, t_ast_data *val, char **array)
 void    cmd_commands(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 {
         char    **cmd_array;
+		char	**env;
 
-
-        cmd_array = split_values(ast->value, envp);
-		// int i = -1;
-		// while (cmd_array[++i])
-		// 	printf("|%s|\n", cmd_array[i]);
+		env = env_to_array(&(control->env_list));
+        cmd_array = split_values(ast->value, env);
 		if (cmd_array[0] == NULL)
 		{
 			empty_cmd(ast, control, val, cmd_array);

@@ -50,19 +50,21 @@ typedef struct s_ast_data
 
 
 
-//-------ast.c
-t_ast*	node_create(char *value);
+/*-------ast.c-----*/
+t_ast	*tree_create(t_ast *ast, char **array);
 void	insert_left(t_ast **ast, char *value);
+t_ast	*firstnode(t_ast **ast, t_ast *new, t_ast *tmp, char *value);
 t_ast	*add_value(t_ast **ast, char *value);
-void	tree_print_rec(t_ast *ast, int level);
-t_ast*	tree_create(t_ast *ast, char **array);
-void	ast_data_free(t_ast_data *val);
-void	t_ctrl_free(t_ctrl *control);
-void	tree_free(t_ast **tree);
-void	tree(char **array, t_ctrl *control, char **envp);
+
+/*-----ast_2.c-----*/
+int	return_prior(char *value);
+t_ast	*addtoend(t_ast **ast, t_ast *new, t_ast *tmp);
+t_ast	*addnode(t_ast **ast, t_ast *new, t_ast *tmp, char *value);
+t_ast	*fnode(t_ast **ast, t_ast *new, t_ast *tmp, char *value);
+
 
 /*-----parsingAstArray.c-----*/
-int		check_char(char *line, char ch, int i);
+t_ast	*node_create(char *value);
 char	*skip_space(char *line, int *i);
 char	*single_quote_parse(char *line, int *i);
 char	*slash_parse(char *line, int *i);
@@ -73,7 +75,7 @@ char	*redirect2(char *tmp, char *line, int *j);
 char	*redirect_parse(char *line, int *i);
 int		find_redir(char *line);
 char	**add_val(char **array, char *val);
-char	*parsing2(char *line);
+char	*parsing2(char *line, char **envp);
 
 /*-----parsingAstArray3.c-----*/
 char	*new_line(char *line, int *i);
@@ -143,12 +145,16 @@ size_t	ft_arraylen(char **str);
 int	ft_strequal(const char *str1, const char *str2);
 int	check_redir_pipe(char *line);
 
-//-----signals.c-----//
+/*-----signals.c-----*/
 void	handlerint(int signal);
 void	sighandler(void);
-char	*start_loop(void);
-void	tree_sighandler(void);
 void	sigproc(void);
+
+/*------signals_2.c-----*/
+void	tree_sighand(int signal);
+void	tree_sighandler(void);
+void	handlerquit(int signum);
+
 
 //------envp.c-----//
 char	*path_handler(char *cmd, char **env);
@@ -164,6 +170,7 @@ void pipe_func(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp);
 void ctrl_free(t_ctrl *control);
 void	ast_data_default(t_ast_data *val);
 void    create_files(t_ast_data *val, int fd);
+void	ast_data_free(t_ast_data *val);
 //----set_exit.c-----//
 static int  new_exit(const int *id);
 int get_exit(void);

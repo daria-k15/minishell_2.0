@@ -32,6 +32,7 @@ char	**pars_to_array(char *line, char **array, char **envp, int *i)
 			line = redirect_parse(line, i);
 			tmp = ft_substr(line, 0, find_redir(line));
 			array = add_val(array, tmp);
+			free(tmp);
 			line = ft_substr(line, find_redir(line),
 					ft_strlen(line) - find_redir(line));
 			*i = 0;
@@ -44,7 +45,7 @@ char	**pars_to_array(char *line, char **array, char **envp, int *i)
 			*i = -1;
 		}
 	}
-	line = parsing2(line);
+	line = parsing2(line, envp);
 	array = add_val(array, line);
 	return (array);
 }

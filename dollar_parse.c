@@ -6,7 +6,7 @@
 /*   By: heveline <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 16:08:01 by heveline          #+#    #+#             */
-/*   Updated: 2021/11/12 16:08:03 by heveline         ###   ########.fr       */
+/*   Updated: 2021/11/16 16:34:31 by heveline         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ char	*found_k(char **envp, char *tmp)
 		while (envp[k][z] && envp[k][z] != '=')
 			z++;
 		tmp2 = ft_substr(envp[k], 0, z);
-		if (ft_strcmp(tmp, tmp2) == 0){
-			break ;}
+		if (ft_strcmp(tmp, tmp2) == 0)
+			break ;
 		k++;
 	}
-	if (z == 1)
+	if (z == 1 && k == ft_arraylen(envp))
 		return ("");
 	tmp2 = ft_substr(envp[k], z + 1, ft_strlen(envp[k]) - z);
 	return (tmp2);

@@ -11,6 +11,7 @@ HEADER =	minishell.h
 
 SOURCES =	main.c\
 			ast.c\
+			ast_2.c\
 			printAst.c\
 			builtins.c\
 			builtins_cd.c\
@@ -24,6 +25,7 @@ SOURCES =	main.c\
 			utils.c \
 			utils_2.c\
 			signals.c \
+			signals_2.c\
 			binary_command.c \
 			exit_status.c \
 			redirects.c

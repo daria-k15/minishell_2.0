@@ -35,6 +35,7 @@ char	*skip_space(char *line, int *i)
 	tmp = ft_substr(line, 0, *i + 1);
 	tmp1 = ft_substr(line, j, ft_strlen(line));
 	tmp1 = ft_strjoin(tmp, tmp1);
+	free(tmp);
 	return (tmp1);
 }
 
@@ -52,10 +53,12 @@ char	*single_quote_parse(char *line, int *i)
 			break ;
 	}
 	tmp = ft_substr(line, 0, j);
-	tmp2 = ft_substr(line, j, *i - j + 1);
+	tmp2 = ft_substr(line, j + 1, *i - j - 1);
 	tmp = ft_strjoin(tmp, tmp2);
 	tmp3 = ft_strdup(line + *i + 1);
 	tmp3 = ft_strjoin(tmp, tmp3);
+	free(tmp);
+	free(tmp2);
 	return (tmp3);
 }
 
@@ -65,7 +68,7 @@ char	*slash_parse(char *line, int *i)
 	char	*tmp2;
 
 	tmp = ft_substr(line, 0, *i);
-	tmp2 = ft_strdup(line + *i);
+	tmp2 = ft_strdup(line + *i + 1);
 	tmp = ft_strjoin(tmp, tmp2);
 	free(line);
 	++(*i);
@@ -89,9 +92,12 @@ char	*double_quote_parse(char *line, int *i)
 			break ;
 	}
 	tmp = ft_substr(line, 0, j);
-	tmp2 = ft_substr(line, j, *i - j + 1);
+	tmp2 = ft_substr(line, j + 1,  *i -j - 1);
 	tmp3 = ft_strdup(line + *i + 1);
 	tmp = ft_strjoin(tmp, tmp2);
 	tmp = ft_strjoin(tmp, tmp3);
+	free(tmp2);
+	free(tmp3);
+	(*i)--;
 	return (tmp);
 }

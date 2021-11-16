@@ -30,6 +30,7 @@ char	*redirect2(char *tmp, char *line, int *j)
 	}
 	line = ft_strdup(line + *j);
 	line = ft_strjoin(tmp, line);
+	free(tmp);
 	return (line);
 }
 
@@ -91,7 +92,7 @@ char	**add_val(char **array, char *val)
 	return (res);
 }
 
-char	*parsing2(char *line)
+char	*parsing2(char *line, char **envp)
 {
 	int	i;
 
@@ -101,8 +102,9 @@ char	*parsing2(char *line)
 		while (line[i] == ' ')
 			i++;
 		line = ft_substr(line, i, ft_strlen(line) - i);
+		i = -1;
 	}
-	while (line[i++])
+	while (line[++i])
 	{
 		if (line[i] == '\'')
 			line = single_quote_parse(line, &i);

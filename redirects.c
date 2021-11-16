@@ -28,10 +28,14 @@ void	left_redir(t_ast *ast, t_ctrl *control, t_ast_data *val, char **envp)
 void    right_redir(t_ast *ast, t_ctrl *control, t_ast_data *val,char **envp)
 {
     int i;
-	
+	char *tmp;
+
 	if (!ft_strcmp((char *)ast->value, ">>"))
-		i = open((char *)ast->right->value, O_CREAT | O_APPEND | O_WRONLY,
+	{
+		tmp = parsing2((char *)ast->right->value, envp);
+		i = open(tmp, O_CREAT | O_APPEND | O_WRONLY,
 			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
+	}
 	else
     	i = open((char *)ast->right->value, O_CREAT | O_TRUNC | O_WRONLY,
 			 S_IRUSR | S_IRGRP | S_IWUSR | S_IROTH);
